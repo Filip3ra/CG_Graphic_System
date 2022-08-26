@@ -44,7 +44,7 @@ class MainWindow(QtWidgets.QWidget):
     def ObjectManagementGroup(self): # não funciona ainda
         objectManagementLayout = QtWidgets.QVBoxLayout()
 
-        insertButton = QtWidgets.QPushButton('Insert ➕')
+        insertButton = QtWidgets.QPushButton('Insert')
         objectManagementLayout.addWidget(insertButton)
 
         objectManagementGroup = QtWidgets.QGroupBox('Object Management')
