@@ -26,7 +26,7 @@ class LeitorEntradaXml:
                 ponto = self.getPonto(elemento)
                 pontos.append(ponto)
 
-        return {  # ?
+        return { 
             'viewport': viewport,
             'window': window,
             'pontos': pontos
