@@ -1,8 +1,8 @@
 # TP1 - Display File e Transformada de Viewport 
 
-Alunos:  André Vinícius e Filipi Maciel
+<b>Alunos</b>:  André Vinícius e Filipi Maciel
 
-Disciplina: Computação Gráfica
+<b>Disciplina</b>: Computação Gráfica
 
 O objetivo desse trabalho é desenvolver um programa que seja capaz de ler um arquivo contendo informações a respeito dos objetos a serem desenhados, da <i>window</i> e da <i>viewport</i>, e gerar um arquivo de saída contendo os objetos no sistema de coordenadas de <i>viewport</i>.
 
