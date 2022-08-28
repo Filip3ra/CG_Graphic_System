@@ -1,5 +1,6 @@
 from asyncore import write
 import pandas as pd
+import os
 
 
 def gera_arquivo_saida(dados_saida):
@@ -12,4 +13,6 @@ def gera_arquivo_saida(dados_saida):
             dados.append('y =' + str(ponto.y))
 
     meu_arquivo = pd.DataFrame(dados)
-    meu_arquivo.to_csv('saida/saida.csv', header=False, index=False)
+
+    NOME_ARQUIVO = 'saida.csv'
+    meu_arquivo.to_csv(os.path.join('../saida/',NOME_ARQUIVO), header=False, index=False)
