@@ -15,4 +15,5 @@ def gera_arquivo_saida(dados_saida):
     meu_arquivo = pd.DataFrame(dados)
 
     NOME_ARQUIVO = 'saida.csv'
-    meu_arquivo.to_csv(os.path.join('../saida/',NOME_ARQUIVO), header=False, index=False)
+    meu_arquivo.to_csv(os.path.join(os.path.dirname(
+        __file__),'..', 'saida', NOME_ARQUIVO), header=False, index=False)
