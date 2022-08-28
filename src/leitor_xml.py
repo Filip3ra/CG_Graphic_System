@@ -7,10 +7,13 @@ from modelos.window import Window
 
 
 class LeitorEntradaXml:
-    def __init__(self):
+    def __init__(self, diretorio_arquivo):
         # leitura do arquivo .xml para interpretar como uma árvore
+
+        #caminho = os.path.join(os.path.dirname(
+        #    __file__), '..', 'entrada', 'entrada.xml')
         caminho = os.path.join(os.path.dirname(
-            __file__), '..', 'entrada', 'entrada.xml')
+            __file__), '../', diretorio_arquivo)
         self.xml_raiz = ET.parse(caminho).getroot()
 
     def getDadosEntradaCompletos(self):
