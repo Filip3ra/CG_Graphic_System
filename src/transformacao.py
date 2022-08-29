@@ -1,5 +1,6 @@
 
 from modelos.ponto2d import Ponto2D_int
+from modelos.reta import Reta
 
 
 class Transformacao:
@@ -22,3 +23,8 @@ class Transformacao:
                 (w_max.y - w_min.y))) * (v_max.y - v_min.y)
 
         return Ponto2D_int(x_vp, y_vp)
+
+    def transformada_reta(self, window_reta):
+        p1 = self.transformada_ponto(window_reta.p1)
+        p2 = self.transformada_ponto(window_reta.p2)
+        return Reta(p1, p2)

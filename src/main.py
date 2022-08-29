@@ -16,11 +16,16 @@ if __name__ == '__main__':
     transformacao = Transformacao(dados_entrada['window'], dados_entrada['viewport'])
 
     dados_saida = {
-        'pontos': []
+        'pontos': [],
+        'retas': []
     }
 
     for w_ponto in dados_entrada['pontos']:
         v_ponto = transformacao.transformada_ponto(w_ponto)
         dados_saida['pontos'].append(v_ponto)
+
+    for w_reta in dados_entrada['retas']:
+        v_reta = transformacao.transformada_reta(w_reta)
+        dados_saida['retas'].append(v_reta)
 
     gera_arquivo_saida(dados_saida)
