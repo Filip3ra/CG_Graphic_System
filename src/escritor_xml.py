@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 
-def gera_arquivo_saida(dados_saida):
+def gera_arquivo_saida(dados_saida, nome_arquivo_saida):
     dados = []
 
     dados.append('PONTOS:')
@@ -20,7 +20,5 @@ def gera_arquivo_saida(dados_saida):
             dados.append('y =' + str(reta.p2))
 
     meu_arquivo = pd.DataFrame(dados)
-
-    NOME_ARQUIVO = 'saida.csv'
     meu_arquivo.to_csv(os.path.join(os.path.dirname(
-        __file__),'..', 'saida', NOME_ARQUIVO), header=False, index=False)
+        __file__),'..', 'saida', nome_arquivo_saida + '.csv'), header=False, index=False)

@@ -6,8 +6,12 @@ from escritor_xml import gera_arquivo_saida
 if __name__ == '__main__':
 
     ## Nome do arquivo .xml passado como argumento
-    ## Chamada do arquivo: python main.py <nome_arquivo_xml>
+    ## Chamada do arquivo: python main.py <nome_arquivo_xml> <nome_arquivo_saida Opcional>
     arquivo_xml = sys.argv[1]
+    if sys.argv[2] is not None:
+        nome_arquivo_saida = sys.argv[2]
+    else:
+        nome_arquivo_saida = 'saida'
 
     # Leio o arquivo xml de entrada e obtenho os dados
     dados_entrada = LeitorEntradaXml(arquivo_xml).getDadosEntradaCompletos()
@@ -28,4 +32,4 @@ if __name__ == '__main__':
         v_reta = transformacao.transformada_reta(w_reta)
         dados_saida['retas'].append(v_reta)
 
-    gera_arquivo_saida(dados_saida)
+    gera_arquivo_saida(dados_saida, nome_arquivo_saida)
