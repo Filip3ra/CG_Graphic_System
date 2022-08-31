@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from modelos.reta import Reta
 from modelos.ponto2d import Ponto2D_int, Ponto2D_float
 from modelos.ponto3d import Ponto3D_float
+from modelos.poligono import Poligono
 from modelos.viewport import Viewport
 from modelos.window import Window
 
@@ -23,6 +24,7 @@ class LeitorEntradaXml:
 
         pontos = []
         retas = []
+        poligonos = []
 
         for i in range(2, len(self.xml_raiz)):
             elemento = self.xml_raiz[i]
@@ -34,31 +36,52 @@ class LeitorEntradaXml:
             if elemento.tag == 'reta':
                 reta = self.getReta(elemento)
                 retas.append(reta)
+            
+            if elemento.tag == 'poligono':
+                poligono = self.getPoligono(elemento)
+                poligonos.append(poligono)
 
         return { 
             'viewport': viewport,
             'window': window,
             'pontos': pontos,
-            'retas': retas
+            'retas': retas,
+            'poligonos': poligonos
         }
 
 # ----- VIEWPORT E WINDOW ----- #
 
     def getDadosViewport(self):
         xml = self.xml_raiz
+        '''
         v_min_ponto = Ponto2D_int.cria_atributos_dicionario_do_xml_int(
             xml[0][0].attrib)  # 10 X 10 margem
         v_max_ponto = Ponto2D_int.cria_atributos_dicionario_do_xml_int(
             xml[0][1].attrib)  # 620 X 470 dimensão
-        return Viewport(v_min_ponto, v_max_ponto)
+        '''
+        xvmin = xml[0][0].attrib['x']
+        xvmax = xml[0][1].attrib['x']
+
+        yvmin = xml[0][0].attrib['y']
+        yvmax = xml[0][1].attrib['y']
+
+        return Viewport(xvmin = xvmin, yvmin = yvmin, xvmax = xvmax, yvmax = yvmax)
 
     def getDadosWindow(self):
         xml = self.xml_raiz
+        '''
         w_min_ponto = Ponto2D_float.cria_atributos_dicionario_do_xml_float(
             xml[1][0].attrib)  # 0.0   0.0
         w_max_ponto = Ponto2D_float.cria_atributos_dicionario_do_xml_float(
             xml[1][1].attrib)  # 10.0  10.0
-        return Window(w_min_ponto, w_max_ponto)
+        '''
+        xwmin = xml[1][0].attrib['x']
+        xwmax = xml[1][1].attrib['x']
+
+        ywmin = xml[1][0].attrib['y']
+        ywmax = xml[1][1].attrib['y']
+
+        return Window(xwmin = xwmin, ywmin = ywmin, xwmax = xwmax, ywmax = ywmax)
 
 # ----- PONTOS, LINHAS E POLIGONOS ----- #
 
@@ -72,6 +95,13 @@ class LeitorEntradaXml:
         p1 = Ponto2D_int.cria_atributos_dicionario_do_xml_int(param_1)
         p2 = Ponto2D_int.cria_atributos_dicionario_do_xml_int(param_2)
         return Reta(p1, p2)
+
+    def getPoligono(self, poligono):
+        pontos = []
+        for i in range(len(poligono)):
+            param = poligono[i].attrib
+            pontos.append(Ponto2D_int.cria_atributos_dicionario_do_xml_int(param))
+        return Poligono(pontos)
 
 
 '''

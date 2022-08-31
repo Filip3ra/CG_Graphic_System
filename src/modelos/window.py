@@ -1,4 +1,6 @@
 class Window:
-  def __init__(self, min_ponto_3d, max_ponto_3d):
-    self.min_ponto = min_ponto_3d
-    self.max_ponto = max_ponto_3d
+  def __init__(self, xwmin: float, ywmin: float, xwmax: float, ywmax: float):
+    self.xwmin = float(xwmin)
+    self.ywmin = float(ywmin)
+    self.xwmax = float(xwmax)
+    self.ywmax = float(ywmax)

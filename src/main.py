@@ -8,6 +8,8 @@ if __name__ == '__main__':
     ## Nome do arquivo .xml passado como argumento
     ## Chamada do arquivo: python main.py <nome_arquivo_xml> <nome_arquivo_saida Opcional>
     arquivo_xml = sys.argv[1]
+    
+    ## Se não tiver o terceiro argumento, o nome do arquivo de saida será por padrão 'saida.csv' na pasta saida
     if sys.argv[2] is not None:
         nome_arquivo_saida = sys.argv[2]
     else:
@@ -21,7 +23,8 @@ if __name__ == '__main__':
 
     dados_saida = {
         'pontos': [],
-        'retas': []
+        'retas': [],
+        'poligonos': []
     }
 
     for w_ponto in dados_entrada['pontos']:
@@ -31,5 +34,9 @@ if __name__ == '__main__':
     for w_reta in dados_entrada['retas']:
         v_reta = transformacao.transformada_reta(w_reta)
         dados_saida['retas'].append(v_reta)
+
+    for w_poligono in dados_entrada['poligonos']:
+        v_poligono = transformacao.transformada_poligono(w_poligono)
+        dados_saida['poligonos'].append(v_poligono)
 
     gera_arquivo_saida(dados_saida, nome_arquivo_saida)
