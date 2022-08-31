@@ -2,6 +2,7 @@ import sys
 from leitor_xml import LeitorEntradaXml
 from transformacao import Transformacao
 from escritor_xml import gera_arquivo_saida
+from janelas.janela import teste, renderiza_objetos
 
 if __name__ == '__main__':
 
@@ -10,10 +11,14 @@ if __name__ == '__main__':
     arquivo_xml = sys.argv[1]
     
     ## Se não tiver o terceiro argumento, o nome do arquivo de saida será por padrão 'saida.csv' na pasta saida
-    if sys.argv[2] is not None:
-        nome_arquivo_saida = sys.argv[2]
-    else:
-        nome_arquivo_saida = 'saida'
+    #if sys.argv[2] is not None:
+     #   nome_arquivo_saida = sys.argv[2]
+    #else:
+    #    nome_arquivo_saida = 'saida_2'
+
+    ## Filipi: por algum motivo aqui deu erro ao organizar o argumento em argv[2]
+    # por isso eu comentei e deixei o nome padrão abaixo
+    nome_arquivo_saida = 'saida'
 
     # Leio o arquivo xml de entrada e obtenho os dados
     dados_entrada = LeitorEntradaXml(arquivo_xml).getDadosEntradaCompletos()
@@ -40,3 +45,11 @@ if __name__ == '__main__':
         dados_saida['poligonos'].append(v_poligono)
 
     gera_arquivo_saida(dados_saida, nome_arquivo_saida)
+
+    # ------------------ Gerando Janela -----------------------
+    # apenas obtenho os dados necessários para desenhar 
+    dados_window = LeitorEntradaXml(arquivo_xml).getDadosWindow()
+    dados_viewport = LeitorEntradaXml(arquivo_xml).getDadosViewport()
+    
+    teste()
+    renderiza_objetos(dados_entrada, dados_viewport) # renderiza a janela e os objetos de fato
