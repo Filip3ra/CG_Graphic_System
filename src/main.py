@@ -9,6 +9,7 @@ if __name__ == '__main__':
     ## Nome do arquivo .xml passado como argumento
     ## Chamada do arquivo: python main.py <nome_arquivo_xml> <nome_arquivo_saida Opcional>
     arquivo_xml = sys.argv[1]
+    #arquivo_xml = 'entrada/entrada.xml'
     
     ## Se não tiver o terceiro argumento, o nome do arquivo de saida será por padrão 'saida.csv' na pasta saida
     #if sys.argv[2] is not None:

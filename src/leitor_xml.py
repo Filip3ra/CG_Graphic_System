@@ -2,7 +2,6 @@ import os
 import xml.etree.ElementTree as ET
 from modelos.reta import Reta
 from modelos.ponto2d import Ponto2D_int, Ponto2D_float
-from modelos.ponto3d import Ponto3D_float
 from modelos.poligono import Poligono
 from modelos.viewport import Viewport
 from modelos.window import Window
