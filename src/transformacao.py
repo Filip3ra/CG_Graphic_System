@@ -25,7 +25,7 @@ class Transformacao:
             (Xw_max - Xw_min) * (Xv_max - Xv_min)
 
         # Yvp = (1 - (Yw - Yw_min) / (Yw_max - Yw_min)) * (Yvp_max - Yvp_min)
-        y_vp = (1 - ((window_ponto.y - Yw_min) /
+        y_vp = (1 - ((window_ponto.y - Yw_min) / \
                 (Yw_max - Yw_min))) * (Yv_max - Yv_min)
 
         return Ponto2D_int(x_vp, y_vp)

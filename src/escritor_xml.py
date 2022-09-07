@@ -1,5 +1,5 @@
 from asyncore import write
-import pandas as pd
+#import pandas as pd
 import os
 
 
@@ -34,8 +34,9 @@ def gera_arquivo_saida(dados_saida, nome_arquivo_saida):
 
             str_poligono += ')'
             dados.append(str_poligono)
-
+    '''
     meu_arquivo = pd.DataFrame(dados)
 
     meu_arquivo.to_csv(os.path.join(os.path.dirname(
         __file__),'..', 'saida', nome_arquivo_saida + '.csv'), header=False, index=False)
+    '''

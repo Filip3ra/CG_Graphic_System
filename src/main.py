@@ -3,58 +3,50 @@ import sys
 from PyQt5 import uic,QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF,QPen,QBrush, QColor
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QDialog,QFileDialog,QListWidgetItem, QGraphicsScene
+from PyQt5.QtWidgets import QDialog,QFileDialog,QListWidgetItem, QGraphicsScene,QApplication
 from modelos.ponto2d import Ponto2D_int
 from modelos.reta import Reta
 from modelos.poligono import Poligono
 from leitor_xml import LeitorEntradaXml
 from transformacao import Transformacao
+from escritor_xml import gera_arquivo_saida
 
 def browseFiles():
-    arquivo_xml = QFileDialog.getOpenFileName(QDialog(), "Open File","\\")
-    print(f'Carregou {arquivo_xml}')
+    try:
+        arquivo_xml = QFileDialog.getOpenFileName(QDialog(), "Open File","\\")
 
-    ## Realizando parse de xml para uma lista de palavras
-    dados_entrada.append(LeitorEntradaXml(arquivo_xml[0]).getDadosEntradaCompletos())
-    dados_entrada_dict = dados_entrada[0]
+        ## Realizando parse de xml para uma lista de palavras
+        dados_entrada.append(LeitorEntradaXml(arquivo_xml[0]).getDadosEntradaCompletos())
+        dados_entrada_dict = dados_entrada[0]
 
-    scene.setSceneRect(0, 0, dados_entrada_dict["viewport"].xvmax,dados_entrada_dict["viewport"].yvmax)
-    
-    # executo transformação em cima dos dados lidos
-    transformacao = Transformacao(dados_entrada_dict['window'], dados_entrada_dict['viewport'])
+        scene.setSceneRect(0, 0, dados_entrada_dict["viewport"].xvmax,dados_entrada_dict["viewport"].yvmax)
+        
+        # executo transformação em cima dos dados lidos
+        transformacao = Transformacao(dados_entrada_dict['window'], dados_entrada_dict['viewport'])
 
-    dados_saida = {
-        'pontos': [],
-        'retas': [],
-        'poligonos': []
-    }
+        for w_ponto in dados_entrada_dict['pontos']:
+            v_ponto = transformacao.transformada_ponto(w_ponto)
+            dados_saida.append(v_ponto)
 
-    for w_ponto in dados_entrada_dict['pontos']:
-        v_ponto = transformacao.transformada_ponto(w_ponto)
-        dados_saida_.append(v_ponto)
+        for w_reta in dados_entrada_dict['retas']:
+            v_reta = transformacao.transformada_reta(w_reta)
+            dados_saida.append(v_reta)
 
-    for w_reta in dados_entrada_dict['retas']:
-        v_reta = transformacao.transformada_reta(w_reta)
-        dados_saida_.append(v_reta)
+        for w_poligono in dados_entrada_dict['poligonos']:
+            v_poligono = transformacao.transformada_poligono(w_poligono)
+            dados_saida.append(v_poligono)            
 
-    for w_poligono in dados_entrada_dict['poligonos']:
-        v_poligono = transformacao.transformada_poligono(w_poligono)
-        dados_saida['poligonos'].append(v_poligono)
-        dados_saida_.append(v_poligono)            
+        ## Adiciona cada objeto na lista
+        for objeto in dados_saida:
+            ui.list_objects.addItem(objeto.__str__())
 
-    ## Adiciona cada objeto na lista
-    '''
-    for objeto in dados_saida:
-        for dados_objeto in dados_saida[objeto]:
-            print(dados_objeto)
-            ui.list_objects.addItem(dados_objeto.__str__())
-    '''
-    for objeto in dados_saida_:
-        ui.list_objects.addItem(objeto.__str__())
+        atualiza_objeto()
 
-    atualiza_objeto()
-
-    return dados_saida_
+        ## Gerando arquivo de saida
+        nome_arquivo_saida = '..\saida.csv'
+        gera_arquivo_saida(dados_saida, nome_arquivo_saida)
+    except:
+        pass
 
 def atualiza_objeto():
     '''
@@ -77,17 +69,17 @@ def exibe_na_viewport():
     for index in range(ui.list_objects.count()):
         if ui.list_objects.item(index).checkState() == QtCore.Qt.Checked:
 
-            if isinstance(dados_saida_[index], Ponto2D_int):
-                scene.addEllipse(dados_saida_[index].x, dados_saida_[index].y, 1, 1)
-            elif isinstance(dados_saida_[index], Reta):
-                scene.addLine(dados_saida_[index].p1.x, dados_saida_[index].p1.y, 
-                              dados_saida_[index].p2.x, dados_saida_[index].p2.y)
-            elif isinstance(dados_saida_[index], Poligono):
+            if isinstance(dados_saida[index], Ponto2D_int):
+                scene.addEllipse(dados_saida[index].x, dados_saida[index].y, 1, 1)
+            elif isinstance(dados_saida[index], Reta):
+                scene.addLine(dados_saida[index].p1.x, dados_saida[index].p1.y, 
+                              dados_saida[index].p2.x, dados_saida[index].p2.y)
+            elif isinstance(dados_saida[index], Poligono):
                 ## Precisa desenhar poligono
                 pen = QPen(Qt.red)
                 greenBurh = QBrush(Qt.green)
                 polygon = QPolygonF()
-                for ponto in dados_saida_[index].lista_pontos:
+                for ponto in dados_saida[index].lista_pontos:
                     polygon.append(QPoint(ponto.x, ponto.y))
 
                 scene.addPolygon(polygon)
@@ -109,7 +101,7 @@ if __name__ == "__main__":
     ui.graphics_view_viewport.setScene(scene)
 
     # Procurando arquivo no diretorio
-    dados_saida_ = []
+    dados_saida = []
     ui.button_open.clicked.connect(browseFiles)
 
     # Ao pressionar na lista de objetos os objetos serão atualizados
