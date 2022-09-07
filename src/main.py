@@ -4,7 +4,7 @@ from PyQt5 import uic, QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF, QPen, QColor, QBrush
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene
-from modelos.ponto2d import Ponto2D_int
+from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.poligono import Poligono
 from leitor_xml import LeitorEntradaXml
@@ -95,7 +95,7 @@ def exibe_na_viewport():
         if ui.list_objects.item(index).checkState() == QtCore.Qt.Checked:
             pen = QPen(brush, 3)
 
-            if isinstance(dados_saida[index], Ponto2D_int):
+            if isinstance(dados_saida[index], Ponto):
                 scene.addEllipse(
                     dados_saida[index].x, dados_saida[index].y, 1, 1, pen)
             elif isinstance(dados_saida[index], Reta):

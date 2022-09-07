@@ -1,7 +1,7 @@
 import os
 import xml.etree.ElementTree as ET
 from modelos.reta import Reta
-from modelos.ponto2d import Ponto2D_int
+from modelos.ponto import Ponto
 from modelos.poligono import Poligono
 from modelos.viewport import Viewport
 from modelos.window import Window
@@ -49,7 +49,7 @@ class LeitorEntradaXml:
         }
 
 # O arquivo .xml de entrada está sendo interpretado como uma árvore,
-# portanto, através da raiz eu acesso os nós da árvore, que constituem 
+# portanto, através da raiz eu acesso os nós da árvore, que constituem
 # as informações da vvieport, window, pontos, retas e poligono.
 
 # ----- VIEWPORT E WINDOW ----- #
@@ -80,13 +80,13 @@ class LeitorEntradaXml:
 
     def getPonto(self, ponto):
         param = ponto.attrib
-        return Ponto2D_int.cria_atributos_dicionario_do_xml_int(param)
+        return Ponto.cria_atributos_dicionario_do_xml_int(param)
 
     def getReta(self, reta):
         param_1 = reta[0].attrib
         param_2 = reta[1].attrib
-        p1 = Ponto2D_int.cria_atributos_dicionario_do_xml_int(param_1)
-        p2 = Ponto2D_int.cria_atributos_dicionario_do_xml_int(param_2)
+        p1 = Ponto.cria_atributos_dicionario_do_xml_int(param_1)
+        p2 = Ponto.cria_atributos_dicionario_do_xml_int(param_2)
         return Reta(p1, p2)
 
     def getPoligono(self, poligono):
@@ -94,5 +94,5 @@ class LeitorEntradaXml:
         for i in range(len(poligono)):
             param = poligono[i].attrib
             pontos.append(
-                Ponto2D_int.cria_atributos_dicionario_do_xml_int(param))
+                Ponto.cria_atributos_dicionario_do_xml_int(param))
         return Poligono(pontos)

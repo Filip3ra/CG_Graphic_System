@@ -3,7 +3,7 @@ from auxiliares import converte_valores_dicionario_para_numerico
 # classe onde tenho os dados de um ponto
 
 
-class Ponto2D_int:
+class Ponto:
     def __init__(self, x, y):
         # isintance() verifica se o objeto(x ou y) é do tipo especificado(int ou float)
         numero_x = isinstance(x, int) or isinstance(x, float)
@@ -23,4 +23,4 @@ class Ponto2D_int:
     # acesso os valores do .xml e faço a conversão deles para um número
     def cria_atributos_dicionario_do_xml_int(dic):
         dic = converte_valores_dicionario_para_numerico(dic, 'float')
-        return Ponto2D_int(dic['x'], dic['y'])
+        return Ponto(dic['x'], dic['y'])

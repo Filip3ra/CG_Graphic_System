@@ -1,6 +1,6 @@
 
 from modelos.reta import Reta
-from modelos.ponto2d import Ponto2D_int
+from modelos.ponto import Ponto
 from modelos.poligono import Poligono
 
 
@@ -30,7 +30,7 @@ class Transformacao:
         y_vp = (1 - ((window_ponto.y - Yw_min) /
                 (Yw_max - Yw_min))) * (Yv_max - Yv_min)
 
-        return Ponto2D_int(x_vp, y_vp)
+        return Ponto(x_vp, y_vp)
 
     # para transformar a reta e o polígono basta transformar seus pontos
     def transformada_reta(self, window_reta: Reta):
