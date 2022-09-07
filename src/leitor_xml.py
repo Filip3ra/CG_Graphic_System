@@ -1,7 +1,7 @@
 import os
 import xml.etree.ElementTree as ET
 from modelos.reta import Reta
-from modelos.ponto2d import Ponto2D_int, Ponto2D_float
+from modelos.ponto2d import Ponto2D_int
 from modelos.poligono import Poligono
 from modelos.viewport import Viewport
 from modelos.window import Window
@@ -14,7 +14,7 @@ class LeitorEntradaXml:
             __file__), '../', diretorio_arquivo)
         self.xml_raiz = ET.parse(caminho).getroot()
 
-    # Essa função faz todas as chamadas de função necessárias para obter todos os dados
+    # Realizo todas as chamadas de funções necessárias para obter todos os dados de entrada
     def getDadosEntradaCompletos(self):
         viewport = self.getDadosViewport()
         window = self.getDadosWindow()
@@ -39,7 +39,7 @@ class LeitorEntradaXml:
                 poligono = self.getPoligono(elemento)
                 poligonos.append(poligono)
 
-        # organizo meu retorno com todos os dados necessários
+        # organizo o retorno com todos os dados necessários
         return {
             'viewport': viewport,
             'window': window,
@@ -47,6 +47,10 @@ class LeitorEntradaXml:
             'retas': retas,
             'poligonos': poligonos
         }
+
+# O arquivo .xml de entrada está sendo interpretado como uma árvore,
+# portanto, através da raiz eu acesso os nós da árvore, que constituem 
+# as informações da vvieport, window, pontos, retas e poligono.
 
 # ----- VIEWPORT E WINDOW ----- #
 
