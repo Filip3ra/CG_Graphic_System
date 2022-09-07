@@ -4,3 +4,9 @@ class Poligono:
             raise ValueError("O polígono precisa ter no mínimo três pontos que não sejam coincidentes")
         else:
             self.lista_pontos = lista_pontos
+
+    def __str__(self) -> str:
+        str_ = 'Poligono: '
+        for ponto in self.lista_pontos:
+            str_ += f'{ponto} '
+        return str_

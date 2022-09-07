@@ -15,7 +15,7 @@ class Ponto2D_int:
             self.y = y
 
     def __str__(self) -> str:
-        return f'Ponto:\n   ({self.x}, {self.y})'
+        return f'Ponto: ({self.x}, {self.y})'
         
     def cria_atributos_dicionario_do_xml_int(dic):
         dic = converte_valores_dicionario_para_numerico(dic, 'float')

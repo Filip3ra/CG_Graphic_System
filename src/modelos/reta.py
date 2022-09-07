@@ -8,5 +8,5 @@ class Reta:
             self.p2 = p2
     
     def __str__(self) -> str:
-        return f'Reta:\n   {self.p1}\n  {self.p2}'
+        return f'Reta: {self.p1} {self.p2}'
     
