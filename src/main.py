@@ -1,24 +1,31 @@
 import os
 import sys
 from PyQt5 import uic,QtCore, QtWidgets
-from PyQt5.QtGui import QPolygonF,QPen,QBrush, QColor
+from PyQt5.QtGui import QPolygonF,QPen, QColor, QBrush
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QDialog,QFileDialog,QListWidgetItem, QGraphicsScene,QApplication
+from PyQt5.QtWidgets import QDialog,QFileDialog,QListWidgetItem, QGraphicsScene
 from modelos.ponto2d import Ponto2D_int
 from modelos.reta import Reta
 from modelos.poligono import Poligono
 from leitor_xml import LeitorEntradaXml
-from transformacao import Transformacao
 from escritor_xml import gera_arquivo_saida
+from transformacao import Transformacao
+import matplotlib.colors as mcolors
 
 def browseFiles():
+    ##  Carrega o arquivo xml
     try:
+        ## Configurando o botão Open File para abrir uma janela no diretório raiz
         arquivo_xml = QFileDialog.getOpenFileName(QDialog(), "Open File","\\")
 
         ## Realizando parse de xml para uma lista de palavras
         dados_entrada.append(LeitorEntradaXml(arquivo_xml[0]).getDadosEntradaCompletos())
+
+        ## Por facilidade criei uma lista para colocar o dicionário, 
+        # assim eu preciso pegar a posição 0 da lista que é o próprio dicionário       
         dados_entrada_dict = dados_entrada[0]
 
+        ## Configurando a cena com o tamanho da viewport passada
         scene.setSceneRect(0, 0, dados_entrada_dict["viewport"].xvmax,dados_entrada_dict["viewport"].yvmax)
         
         # executo transformação em cima dos dados lidos
@@ -42,7 +49,7 @@ def browseFiles():
 
         atualiza_objeto()
 
-        ## Gerando arquivo de saida
+        ## Salvando o arquivo
         nome_arquivo_saida = '..\saida.csv'
         gera_arquivo_saida(dados_saida, nome_arquivo_saida)
     except:
@@ -63,26 +70,36 @@ def exibe_na_viewport():
     ''' 
     Verifica quais itens estão selecionados, os que estiverem selecionados serão exibidos na viewport.
     '''
+    ## Dicionário de cores para os objetos geométricos
+    dict_colors = mcolors.TABLEAU_COLORS
+    list_colors_iter = iter(dict_colors)
+
     ## Limpa a tela
     scene.clear()
-    scene.addRect(0, 0, dados_entrada[0]["viewport"].xvmax,dados_entrada[0]["viewport"].yvmax,QPen(QColor("black")))
+
+    ## Adicionando retângulo conforme o viewport passado
+    scene.addRect(0, 0, dados_entrada[0]["viewport"].xvmax,
+                  dados_entrada[0]["viewport"].yvmax,QPen(QColor("black")))
+                  
     for index in range(ui.list_objects.count()):
+        ## Adicionando uma cor para cada objeto
+        color = next(list_colors_iter)
+        brush = QBrush(QColor(dict_colors[color]))
+
         if ui.list_objects.item(index).checkState() == QtCore.Qt.Checked:
+            pen = QPen(brush, 3)
 
             if isinstance(dados_saida[index], Ponto2D_int):
-                scene.addEllipse(dados_saida[index].x, dados_saida[index].y, 1, 1)
+                scene.addEllipse(dados_saida[index].x, dados_saida[index].y, 1, 1, pen)
             elif isinstance(dados_saida[index], Reta):
                 scene.addLine(dados_saida[index].p1.x, dados_saida[index].p1.y, 
-                              dados_saida[index].p2.x, dados_saida[index].p2.y)
+                              dados_saida[index].p2.x, dados_saida[index].p2.y, pen)
             elif isinstance(dados_saida[index], Poligono):
-                ## Precisa desenhar poligono
-                pen = QPen(Qt.red)
-                greenBurh = QBrush(Qt.green)
                 polygon = QPolygonF()
                 for ponto in dados_saida[index].lista_pontos:
                     polygon.append(QPoint(ponto.x, ponto.y))
 
-                scene.addPolygon(polygon)
+                scene.addPolygon(polygon, pen)
 
             ui.graphics_view_viewport.setScene(scene)
 
@@ -102,11 +119,13 @@ if __name__ == "__main__":
 
     # Procurando arquivo no diretorio
     dados_saida = []
+    
+    ## Ao butão button_open for clicado, chama a função browseFiles
     ui.button_open.clicked.connect(browseFiles)
 
     # Ao pressionar na lista de objetos os objetos serão atualizados
     ui.list_objects.pressed.connect(exibe_na_viewport)
 
     ## Fechando janela
-    ui.button_close.clicked.connect(Dialog.close)
+    ui.button_close.clicked.connect(QtCore.QCoreApplication.instance().quit)
     sys.exit(app.exec_())
