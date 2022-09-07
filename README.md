@@ -18,13 +18,13 @@ Criado o ambiente, é necessário ativá-lo.
 
 E por último, precisamos instalar o PySide, biblioteca responsável pela interface gráfica do nosso programa.
 
-``pip install pyside6``
+``pip install pyside5``
 
 ## Como executar
 
 Para executar o trabalho, é preciso ir para pasta ``src`` e depois executar o arquivo ``main.py``.
 
 ``cd src``
-``python3 main.py <arquivo_xml>``
+``python3 main.py``
 
 

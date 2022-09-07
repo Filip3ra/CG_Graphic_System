@@ -8,19 +8,18 @@ from modelos.window import Window
 
 
 class LeitorEntradaXml:
+    # Leitura do arquivo .xml para interpretar como uma árvore
     def __init__(self, diretorio_arquivo):
-        # leitura do arquivo .xml para interpretar como uma árvore
-
-        #caminho = os.path.join(os.path.dirname(
-        #    __file__), '..', 'entrada', 'entrada.xml')
         caminho = os.path.join(os.path.dirname(
             __file__), '../', diretorio_arquivo)
         self.xml_raiz = ET.parse(caminho).getroot()
 
+    # Essa função faz todas as chamadas de função necessárias para obter todos os dados
     def getDadosEntradaCompletos(self):
         viewport = self.getDadosViewport()
         window = self.getDadosWindow()
 
+        # Obtenho os dados dos pontos, retas e poligonos
         pontos = []
         retas = []
         poligonos = []
@@ -35,12 +34,13 @@ class LeitorEntradaXml:
             if elemento.tag == 'reta':
                 reta = self.getReta(elemento)
                 retas.append(reta)
-            
+
             if elemento.tag == 'poligono':
                 poligono = self.getPoligono(elemento)
                 poligonos.append(poligono)
 
-        return { 
+        # organizo meu retorno com todos os dados necessários
+        return {
             'viewport': viewport,
             'window': window,
             'pontos': pontos,
@@ -52,35 +52,25 @@ class LeitorEntradaXml:
 
     def getDadosViewport(self):
         xml = self.xml_raiz
-        '''
-        v_min_ponto = Ponto2D_int.cria_atributos_dicionario_do_xml_int(
-            xml[0][0].attrib)  # 10 X 10 margem
-        v_max_ponto = Ponto2D_int.cria_atributos_dicionario_do_xml_int(
-            xml[0][1].attrib)  # 620 X 470 dimensão
-        '''
+
         xvmin = xml[0][0].attrib['x']
         xvmax = xml[0][1].attrib['x']
 
         yvmin = xml[0][0].attrib['y']
         yvmax = xml[0][1].attrib['y']
 
-        return Viewport(xvmin = xvmin, yvmin = yvmin, xvmax = xvmax, yvmax = yvmax)
+        return Viewport(xvmin=xvmin, yvmin=yvmin, xvmax=xvmax, yvmax=yvmax)
 
     def getDadosWindow(self):
         xml = self.xml_raiz
-        '''
-        w_min_ponto = Ponto2D_float.cria_atributos_dicionario_do_xml_float(
-            xml[1][0].attrib)  # 0.0   0.0
-        w_max_ponto = Ponto2D_float.cria_atributos_dicionario_do_xml_float(
-            xml[1][1].attrib)  # 10.0  10.0
-        '''
+
         xwmin = xml[1][0].attrib['x']
         xwmax = xml[1][1].attrib['x']
 
         ywmin = xml[1][0].attrib['y']
         ywmax = xml[1][1].attrib['y']
 
-        return Window(xwmin = xwmin, ywmin = ywmin, xwmax = xwmax, ywmax = ywmax)
+        return Window(xwmin=xwmin, ywmin=ywmin, xwmax=xwmax, ywmax=ywmax)
 
 # ----- PONTOS, LINHAS E POLIGONOS ----- #
 
@@ -99,22 +89,6 @@ class LeitorEntradaXml:
         pontos = []
         for i in range(len(poligono)):
             param = poligono[i].attrib
-            pontos.append(Ponto2D_int.cria_atributos_dicionario_do_xml_int(param))
+            pontos.append(
+                Ponto2D_int.cria_atributos_dicionario_do_xml_int(param))
         return Poligono(pontos)
-
-
-'''
-
-ÁRVORE DA XML
-
-xml_raiz = <dados>
-    xml_raiz[0][0] == vpmin
-    xml_raiz[0][1] == vpmax
-
-        xml_raiz[0][0].atrib == {'x': 10, 'y': 10}
-        xml_raiz[0][1].atrib == {'x': '630', 'y': '470'}
-
-            xml_raiz[0][1].atrib.items() == dict_items([('x', '10'), ('y', '10')])
-            ...
-
-'''

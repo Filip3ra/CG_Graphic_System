@@ -2,9 +2,6 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 HABILITA_COORDENADAS = True
 
-def teste():
-    print('testandoooo')
-
 # 'dados_objetos' deve conter as informações dos pontos após a transformação,
 # mas pra isso tem que melhorar a saída, organizar os dados de modo que fica
 # fácil acessar por aqui. 
@@ -40,7 +37,6 @@ class Renderizador(QtWidgets.QWidget):
         self.setWindowTitle(f'Janela {int(largura)} x {int(altura)} px')
 
     # permite configurar o fundo
-    # TODO - adicionar um grid?
     def config_background(self): # change
         palette = self.palette()
         palette.setColor(self.backgroundRole(), QtGui.Qt.white)
