@@ -17,7 +17,7 @@ Inicialmente, é necessário que haja a instalação do Python em sua máquina, 
 Para o sistema gráfico executar corretamente o xml precisa ter <b>obrigatoriamente</b> a seguinte estrutura:
 
 <details>
-'''
+
 <?xml version="1.0" ?>
 <dados>
 	<viewport>
@@ -44,7 +44,7 @@ Para o sistema gráfico executar corretamente o xml precisa ter <b>obrigatoriame
 		<!-- <ponto> adicionais -->
 	</poligono>
 </dados>
-'''
+
 </details>
 
 ## Como executar
@@ -66,3 +66,9 @@ Clique no botão ``Open`` para adicionar o arquivo xml que deseja. Adicionado o 
 
 <img src = "imgs/print_funcionamento.png">
 
+## Equipe
+
+<ul>
+	<li><a href="https://www.linkedin.com/in/andre-vinicius-mendes-barros-800410195/">André Vinícius</a></li>
+	<li><a href="https://www.linkedin.com/in/filipi-maciel-891300132/">Filipi Maciel</a></li>
+</ul>
