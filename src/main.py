@@ -2,7 +2,7 @@ import os
 import sys
 from PyQt5 import uic, QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF, QPen, QColor, QBrush
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene
 from modelos.ponto import Ponto
 from modelos.reta import Reta
@@ -14,7 +14,10 @@ import matplotlib.colors as mcolors
 
 
 def browseFiles():
-    # Carrega o arquivo xml
+    '''
+    Função que carrega o arquivo xml e já realiza a transformação dos pontos do objeto geométrico.
+
+    '''
     try:
         # Configurando o botão Open File para abrir uma janela no diretório raiz
         arquivo_xml = QFileDialog.getOpenFileName(QDialog(), "Open File", "\\")
@@ -31,7 +34,7 @@ def browseFiles():
         scene.setSceneRect(
             0, 0, dados_entrada_dict["viewport"].xvmax, dados_entrada_dict["viewport"].yvmax)
 
-        # executo transformação em cima dos dados lidos
+        # Realiza a transformação em cima dos dados lidos
         transformacao = Transformacao(
             dados_entrada_dict['window'], dados_entrada_dict['viewport'])
 
@@ -71,7 +74,6 @@ def atualiza_objeto():
         item.setCheckState(QtCore.Qt.Unchecked)
         ui.list_objects.addItem(item)
 
-
 def exibe_na_viewport():
     ''' 
     Verifica quais itens estão selecionados, os que estiverem selecionados serão exibidos na viewport.
@@ -104,12 +106,11 @@ def exibe_na_viewport():
             elif isinstance(dados_saida[index], Poligono):
                 polygon = QPolygonF()
                 for ponto in dados_saida[index].lista_pontos:
-                    polygon.append(QPoint(int(ponto.x), int(ponto.y)))
+                    polygon.append(QPointF(ponto.x, ponto.y))
 
                 scene.addPolygon(polygon, pen)
 
             ui.graphics_view_viewport.setScene(scene)
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

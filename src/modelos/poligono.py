@@ -1,5 +1,9 @@
-# classe onde tenho a lista de pontos que constituem um poligono
 class Poligono:
+    '''
+    Classe para representar o objeto geométrico Poligono.
+
+    Obs: A lista de pontos representa os pontos que constituem um poligono.
+    '''
     def __init__(self, lista_pontos) -> None:
         if len(lista_pontos) < 3:
             raise ValueError(

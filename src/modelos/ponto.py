@@ -1,9 +1,9 @@
 from auxiliares import converte_valores_dicionario_para_numerico
 
-# classe onde tenho os dados de um ponto
-
-
 class Ponto:
+    '''
+    Classe para representar o objeto geométrico Ponto.
+    '''
     def __init__(self, x, y):
         # isintance() verifica se o objeto(x ou y) é do tipo especificado(int ou float)
         numero_x = isinstance(x, int) or isinstance(x, float)
