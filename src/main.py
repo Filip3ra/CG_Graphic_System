@@ -1,3 +1,9 @@
+'''
+Equipe: André Vinícius e Filipi Maciel
+Disciplina: Computação Gráfica 2/2022
+
+'''
+
 import os
 import sys
 from PyQt5 import uic, QtCore, QtWidgets
