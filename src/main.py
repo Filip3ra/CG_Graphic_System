@@ -68,7 +68,6 @@ def browseFiles():
     except:
         pass
 
-
 def atualiza_objeto():
     '''
     Atualizando objeto para ficar com o checkbox False
@@ -118,6 +117,36 @@ def exibe_na_viewport():
 
             ui.graphics_view_viewport.setScene(scene)
 
+def adiciona_objeto():
+    # Verifica o tipo do objeto
+    if ui.radioButton_ponto.isChecked():
+        print('Ok')
+    elif ui.radioButton_reta.isChecked():
+        # Se for a reta precisa permitir os campos de texto 2
+        ui.label_ponto_2_x.setDisabled(False)
+        ui.text_x_2.setDisabled(False)
+        ui.label_ponto_2_y.setDisabled(False)
+        ui.text_y_2.setDisabled(False)
+    elif ui.radioButton_poligono.isChecked():
+        # Se for um poligono reta precisa permitir os campos de texto 2 e 3,
+        # e o botão de adicionar mais pontos
+        ui.label_ponto_2_x.setDisabled(False)
+        ui.text_x_2.setDisabled(False)
+        ui.label_ponto_2_y.setDisabled(False)
+        ui.text_y_2.setDisabled(False)
+        ui.label_ponto_3_x.setDisabled(False)
+        ui.text_x_3.setDisabled(False)
+        ui.label_ponto_3_y.setDisabled(False)
+        ui.text_y_3.setDisabled(False)
+        ui.button_add_ponto.setDisabled(False)
+
+    ## Precisa verificar o fato de quando clicar no radio button e mudar
+    ## o disable deve voltar ficar True 
+    
+    # Verifica se os campos estão devidamente preenchidos
+
+    # Adiciona objeto na lista de objetos geométricos
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
@@ -140,6 +169,9 @@ if __name__ == "__main__":
 
     # Ao pressionar na lista de objetos os objetos serão atualizados
     ui.list_objects.pressed.connect(exibe_na_viewport)
+
+    # Ao pressionar o botão de adicionar um objeto, chama a função
+    ui.button_adicionar.pressed.connect(adiciona_objeto)
 
     # Fechando janela
     ui.button_close.clicked.connect(QtCore.QCoreApplication.instance().quit)
