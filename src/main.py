@@ -10,6 +10,7 @@ from PyQt5 import uic, QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF, QPen, QColor, QBrush
 from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene
+#from auxiliares import addPonto
 from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.poligono import Poligono
@@ -68,6 +69,7 @@ def browseFiles():
     except:
         pass
 
+
 def atualiza_objeto():
     '''
     Atualizando objeto para ficar com o checkbox False
@@ -78,6 +80,7 @@ def atualiza_objeto():
         item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
         item.setCheckState(QtCore.Qt.Unchecked)
         ui.list_objects.addItem(item)
+
 
 def exibe_na_viewport():
     ''' 
@@ -117,35 +120,68 @@ def exibe_na_viewport():
 
             ui.graphics_view_viewport.setScene(scene)
 
+
 def adiciona_objeto():
     # Verifica o tipo do objeto
     if ui.radioButton_ponto.isChecked():
+        ui.label_ponto_1_x.setDisabled(False)
+        ui.text_x_1.setDisabled(False)
+        ui.label_ponto_1_y.setDisabled(False)
+        ui.text_y_1.setDisabled(False)
+
+        ui.label_ponto_2_x.setDisabled(True)
+        ui.text_x_2.setDisabled(True)
+        ui.label_ponto_2_y.setDisabled(True)
+        ui.text_y_2.setDisabled(True)
+
+        ui.label_ponto_3_x.setDisabled(True)
+        ui.text_x_3.setDisabled(True)
+        ui.label_ponto_3_y.setDisabled(True)
+        ui.text_y_3.setDisabled(True)
         print('Ok')
     elif ui.radioButton_reta.isChecked():
         # Se for a reta precisa permitir os campos de texto 2
+        ui.label_ponto_1_x.setDisabled(False)
+        ui.text_x_1.setDisabled(False)
+        ui.label_ponto_1_y.setDisabled(False)
+        ui.text_y_1.setDisabled(False)
+
         ui.label_ponto_2_x.setDisabled(False)
         ui.text_x_2.setDisabled(False)
         ui.label_ponto_2_y.setDisabled(False)
         ui.text_y_2.setDisabled(False)
+
+        ui.label_ponto_3_x.setDisabled(True)
+        ui.text_x_3.setDisabled(True)
+        ui.label_ponto_3_y.setDisabled(True)
+        ui.text_y_3.setDisabled(True)
+
     elif ui.radioButton_poligono.isChecked():
         # Se for um poligono reta precisa permitir os campos de texto 2 e 3,
         # e o botão de adicionar mais pontos
+        ui.label_ponto_1_x.setDisabled(False)
+        ui.text_x_1.setDisabled(False)
+        ui.label_ponto_1_y.setDisabled(False)
+        ui.text_y_1.setDisabled(False)
+
         ui.label_ponto_2_x.setDisabled(False)
         ui.text_x_2.setDisabled(False)
         ui.label_ponto_2_y.setDisabled(False)
         ui.text_y_2.setDisabled(False)
+
         ui.label_ponto_3_x.setDisabled(False)
         ui.text_x_3.setDisabled(False)
         ui.label_ponto_3_y.setDisabled(False)
         ui.text_y_3.setDisabled(False)
         ui.button_add_ponto.setDisabled(False)
 
-    ## Precisa verificar o fato de quando clicar no radio button e mudar
-    ## o disable deve voltar ficar True 
-    
+    # Precisa verificar o fato de quando clicar no radio button e mudar
+    # o disable deve voltar ficar True
+
     # Verifica se os campos estão devidamente preenchidos
 
     # Adiciona objeto na lista de objetos geométricos
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
@@ -164,6 +200,7 @@ if __name__ == "__main__":
     # Procurando arquivo no diretorio
     dados_saida = []
 
+    
     # Ao butão button_open for clicado, chama a função browseFiles
     ui.button_open.clicked.connect(browseFiles)
 

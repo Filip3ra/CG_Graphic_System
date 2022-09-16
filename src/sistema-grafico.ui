@@ -164,7 +164,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="label_ponto_1_x"><!-- aqui é x ou y? -->
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -177,7 +177,7 @@
      <string>x:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QLabel" name="label_ponto_1_y"> <!-- é isso mesmo? -->
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -190,7 +190,7 @@
      <string>y:</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="tex_y_1">
+   <widget class="QTextEdit" name="text_y_1">
     <property name="geometry">
      <rect>
       <x>280</x>
