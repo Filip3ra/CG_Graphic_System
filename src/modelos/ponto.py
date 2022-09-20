@@ -16,9 +16,13 @@ class Ponto:
         else:
             self.x = x
             self.y = y
+            self.matriz = [x, y, 1]
 
     def __str__(self) -> str:
         return f'Ponto: ({self.x}, {self.y})'
+
+    def centro_objeto(self):
+        return self.x, self.y
 
     # acesso os valores do .xml e faço a conversão deles para um número
     def cria_atributos_dicionario_do_xml_int(dic):

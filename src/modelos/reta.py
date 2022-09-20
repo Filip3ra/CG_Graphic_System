@@ -15,3 +15,8 @@ class Reta:
 
     def __str__(self) -> str:
         return f'Reta: {self.p1} {self.p2}'
+
+    def centro_objeto(self):
+        centro_x = (self.p1.x + self.p2.x)/2
+        centro_y = (self.p1.y + self.p2.y)/2
+        return centro_x, centro_y

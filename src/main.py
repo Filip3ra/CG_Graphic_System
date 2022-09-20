@@ -6,19 +6,28 @@ Disciplina: Computação Gráfica 2/2022
 
 import os
 import sys
+import numpy as np
 from PyQt5 import uic, QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF, QPen, QColor, QBrush
 from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene
-#from auxiliares import addPonto
+import matplotlib.colors as mcolors
+
 from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.poligono import Poligono
 from leitor_xml import LeitorEntradaXml
 from escritor_xml import gera_arquivo_saida
 from transformacao import Transformacao
-import matplotlib.colors as mcolors
+from transformacoes_geometricas import TransformacaoGeometrica
 
+def atualiza_lista_objetos():
+    '''
+    Função que limpa e atualiza a lista de objetos conforme os objetos presentes na lista dados_saida
+    '''
+    ui.list_objects.clear()
+    for objeto in dados_saida:
+            ui.list_objects.addItem(objeto.__str__())
 
 def browseFiles():
     '''
@@ -58,17 +67,15 @@ def browseFiles():
             dados_saida.append(v_poligono)
 
         # Adiciona cada objeto na lista
-        for objeto in dados_saida:
-            ui.list_objects.addItem(objeto.__str__())
+        atualiza_lista_objetos()
 
-        atualiza_objeto()
+        exibe_na_viewport()
 
         # Salvando o arquivo
         nome_arquivo_saida = '..\saida.csv'
         gera_arquivo_saida(dados_saida, nome_arquivo_saida)
     except:
         pass
-
 
 def atualiza_objeto():
     '''
@@ -81,11 +88,12 @@ def atualiza_objeto():
         item.setCheckState(QtCore.Qt.Unchecked)
         ui.list_objects.addItem(item)
 
-
 def exibe_na_viewport():
     ''' 
     Verifica quais itens estão selecionados, os que estiverem selecionados serão exibidos na viewport.
     '''
+    atualiza_objeto()
+
     # Dicionário de cores para os objetos geométricos
     dict_colors = mcolors.TABLEAU_COLORS
     list_colors_iter = iter(dict_colors)
@@ -102,24 +110,22 @@ def exibe_na_viewport():
         color = next(list_colors_iter)
         brush = QBrush(QColor(dict_colors[color]))
 
-        if ui.list_objects.item(index).checkState() == QtCore.Qt.Checked:
-            pen = QPen(brush, 3)
+        pen = QPen(brush, 3)
 
-            if isinstance(dados_saida[index], Ponto):
-                scene.addEllipse(
-                    dados_saida[index].x, dados_saida[index].y, 1, 1, pen)
-            elif isinstance(dados_saida[index], Reta):
-                scene.addLine(dados_saida[index].p1.x, dados_saida[index].p1.y,
-                              dados_saida[index].p2.x, dados_saida[index].p2.y, pen)
-            elif isinstance(dados_saida[index], Poligono):
-                polygon = QPolygonF()
-                for ponto in dados_saida[index].lista_pontos:
-                    polygon.append(QPointF(ponto.x, ponto.y))
+        if isinstance(dados_saida[index], Ponto):
+            scene.addEllipse(
+                dados_saida[index].x, dados_saida[index].y, 1, 1, pen)
+        elif isinstance(dados_saida[index], Reta):
+            scene.addLine(dados_saida[index].p1.x, dados_saida[index].p1.y,
+                            dados_saida[index].p2.x, dados_saida[index].p2.y, pen)
+        elif isinstance(dados_saida[index], Poligono):
+            polygon = QPolygonF()
+            for ponto in dados_saida[index].lista_pontos:
+                polygon.append(QPointF(ponto.x, ponto.y))
 
-                scene.addPolygon(polygon, pen)
+            scene.addPolygon(polygon, pen)
 
-            ui.graphics_view_viewport.setScene(scene)
-
+        ui.graphics_view_viewport.setScene(scene)
 
 def adiciona_objeto():
     # Verifica o tipo do objeto
@@ -175,13 +181,103 @@ def adiciona_objeto():
         ui.text_y_3.setDisabled(False)
         ui.button_add_ponto.setDisabled(False)
 
-    # Precisa verificar o fato de quando clicar no radio button e mudar
-    # o disable deve voltar ficar True
+def controle_diminuir():
+    tag = 'Diminuir'
+    ui.list_transformacoes.addItem(tag)
 
-    # Verifica se os campos estão devidamente preenchidos
+def controle_ampliar():
+    tag = 'Ampliar'
+    ui.list_transformacoes.addItem(tag)
 
-    # Adiciona objeto na lista de objetos geométricos
+def controle_girar_negativamente():
+    tag = 'Girar Negativo'
+    ui.list_transformacoes.addItem(tag)
 
+def controle_girar_positivamente():
+    tag = 'Girar Positivo'
+    ui.list_transformacoes.addItem(tag)
+
+def controle_cima():
+    tag = 'Cima'
+    ui.list_transformacoes.addItem(tag)
+
+def controle_baixo():
+    tag = 'Baixo'
+    ui.list_transformacoes.addItem(tag)
+
+def controle_esquerda():
+    tag = 'Esquerda'
+    ui.list_transformacoes.addItem(tag)
+
+def controle_direita():
+    tag = 'Direita'
+    ui.list_transformacoes.addItem(tag)
+
+def adiciona_lista_transformacoes():
+    for index in range(ui.list_transformacoes.count()):
+        # Verifica qual objeto está marcado na lista de objetos
+        item_lista_transformacoes = ui.list_transformacoes.item(index).text()
+        if item_lista_transformacoes == 'Ampliar':
+            transformacoes.escala(1.1, 1.1)
+        elif item_lista_transformacoes == 'Diminuir':
+            transformacoes.escala(0.9, 0.9)
+        elif item_lista_transformacoes == 'Girar Negativo':
+            # Rotacionando -10° = -0.1745 rad
+            transformacoes.rotacao(-0.1745)
+        elif item_lista_transformacoes == 'Girar Positivo':
+            # Rotacionando 10° = 0.1745 rad
+            transformacoes.rotacao(-0.1745)
+        elif item_lista_transformacoes == 'Cima':
+            # Transladando 10 unidades para cima em Y
+            transformacoes.translacao(0, 10)
+        elif item_lista_transformacoes == 'Baixo':
+            # Transladando 10 unidades para baixo em X
+            transformacoes.translacao(0, -10)
+        elif item_lista_transformacoes == 'Esquerda':
+            # Transladando 10 unidades para esquerda em X
+            transformacoes.translacao(-10, 0)
+        elif item_lista_transformacoes == 'Direita':
+            # Transladando 10 unidades para direita em X
+            transformacoes.translacao(10, 0)
+
+def aplica_transformacoes_ponto(index):
+    # Transladando o centro do objeto para posição (0,0)
+    x_centro, y_centro = dados_saida[index].centro_objeto()
+    transformacoes.translacao(-x_centro, -y_centro)
+
+    # Aplicando as transformações que estiverem na lista de transformações
+    adiciona_lista_transformacoes()
+
+    # Transladando o centro do objeto (0,0) para posição original
+    transformacoes.translacao(x_centro, y_centro)
+
+    matriz_aux_p1 = np.dot(transformacoes.matriz, 
+                           dados_saida[index].p1.matriz)
+    matriz_aux_p2 = np.dot(transformacoes.matriz, 
+                           dados_saida[index].p2.matriz) 
+    dados_saida[index].p1 = Ponto(matriz_aux_p1[0], matriz_aux_p1[1])
+    dados_saida[index].p2 = Ponto(matriz_aux_p2[0], matriz_aux_p2[1])
+
+    # Limpa matriz de transformações
+    transformacoes.limpar()
+
+def aplica_transformacoes():
+    flag_checked_object = False
+    for index in range(ui.list_objects.count()):
+        # Verifica qual objeto está marcado na lista de objetos
+        if ui.list_objects.item(index).checkState() == QtCore.Qt.Checked:
+            flag_checked_object = True
+            aplica_transformacoes_ponto(index)
+
+            # Limpa lista de objetos e carrega os objetos atualizados
+            atualiza_lista_objetos()
+            exibe_na_viewport()
+    
+    # Limpa lista de transformações
+    ui.list_transformacoes.clear()
+
+    if not flag_checked_object:
+        print('Objeto Geométrico não selecionado!')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
@@ -199,16 +295,33 @@ if __name__ == "__main__":
 
     # Procurando arquivo no diretorio
     dados_saida = []
-
-    
+   
     # Ao butão button_open for clicado, chama a função browseFiles
     ui.button_open.clicked.connect(browseFiles)
 
-    # Ao pressionar na lista de objetos os objetos serão atualizados
-    ui.list_objects.pressed.connect(exibe_na_viewport)
-
     # Ao pressionar o botão de adicionar um objeto, chama a função
     ui.button_adicionar.pressed.connect(adiciona_objeto)
+
+    transformacoes = TransformacaoGeometrica()
+
+    ## Ao clicar nos butões das transformações geométricas 
+    # é chamada a função específica para aquele butão
+    ui.button_diminuir.clicked.connect(controle_diminuir)
+    ui.button_ampliar.clicked.connect(controle_ampliar)
+    ui.button_girar_negativo.clicked.connect(
+        controle_girar_negativamente
+    )
+    ui.button_girar_positivo.clicked.connect(
+        controle_girar_positivamente
+    )
+    ui.button_cima.clicked.connect(controle_cima)
+    ui.button_baixo.clicked.connect(controle_baixo)
+    ui.button_esquerda.clicked.connect(controle_esquerda)
+    ui.button_direita.clicked.connect(controle_direita)
+        
+    #x_centro, y_centro = 186,322
+    #transformacoes.translacao(-x_centro, -y_centro)
+    ui.button_aplicar.clicked.connect(aplica_transformacoes)
 
     # Fechando janela
     ui.button_close.clicked.connect(QtCore.QCoreApplication.instance().quit)

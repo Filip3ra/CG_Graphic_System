@@ -16,3 +16,6 @@ class Poligono:
         for ponto in self.lista_pontos:
             str_ += f'{ponto} '
         return str_
+
+    def centro_objeto(self):
+        print("Precisa implementar centro do poligono")
