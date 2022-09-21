@@ -240,7 +240,7 @@ def adiciona_lista_transformacoes():
             # Transladando 10 unidades para direita em X
             transformacoes.translacao(10, 0)
 
-def aplica_transformacoes_ponto(index):
+def aplica_transformacoes(index):
     # Transladando o centro do objeto para posição (0,0)
     x_centro, y_centro = dados_saida[index].centro_objeto()
     transformacoes.translacao(-x_centro, -y_centro)
@@ -251,23 +251,27 @@ def aplica_transformacoes_ponto(index):
     # Transladando o centro do objeto (0,0) para posição original
     transformacoes.translacao(x_centro, y_centro)
 
-    matriz_aux_p1 = np.dot(transformacoes.matriz, 
-                           dados_saida[index].p1.matriz)
-    matriz_aux_p2 = np.dot(transformacoes.matriz, 
-                           dados_saida[index].p2.matriz) 
-    dados_saida[index].p1 = Ponto(matriz_aux_p1[0], matriz_aux_p1[1])
-    dados_saida[index].p2 = Ponto(matriz_aux_p2[0], matriz_aux_p2[1])
+    # Verifica qual objeto geometrico e aplica a transformação
+    if isinstance(dados_saida[index], Ponto):
+        dados_saida[index] = transformacoes.aplica_transformacoes_ponto(dados_saida[index])
+    elif isinstance(dados_saida[index], Reta):
+        dados_saida[index] = transformacoes.aplica_transformacoes_reta(dados_saida[index])
+    elif isinstance(dados_saida[index], Poligono):
+        dados_saida[index] = transformacoes.aplica_transformacoes_poligono(dados_saida[index])
+    else:
+        raise TypeError("Tipo de objeto não encontrado!")
 
     # Limpa matriz de transformações
     transformacoes.limpar()
 
-def aplica_transformacoes():
+def verifica_transformacoes():
     flag_checked_object = False
     for index in range(ui.list_objects.count()):
         # Verifica qual objeto está marcado na lista de objetos
+        # Se tiver objeto marcado chama a função aplica_transformacoes
         if ui.list_objects.item(index).checkState() == QtCore.Qt.Checked:
             flag_checked_object = True
-            aplica_transformacoes_ponto(index)
+            aplica_transformacoes(index)
 
             # Limpa lista de objetos e carrega os objetos atualizados
             atualiza_lista_objetos()
@@ -308,20 +312,15 @@ if __name__ == "__main__":
     # é chamada a função específica para aquele butão
     ui.button_diminuir.clicked.connect(controle_diminuir)
     ui.button_ampliar.clicked.connect(controle_ampliar)
-    ui.button_girar_negativo.clicked.connect(
-        controle_girar_negativamente
-    )
-    ui.button_girar_positivo.clicked.connect(
-        controle_girar_positivamente
-    )
+    ui.button_girar_negativo.clicked.connect(controle_girar_negativamente)
+    ui.button_girar_positivo.clicked.connect(controle_girar_positivamente)
     ui.button_cima.clicked.connect(controle_cima)
     ui.button_baixo.clicked.connect(controle_baixo)
     ui.button_esquerda.clicked.connect(controle_esquerda)
     ui.button_direita.clicked.connect(controle_direita)
         
-    #x_centro, y_centro = 186,322
-    #transformacoes.translacao(-x_centro, -y_centro)
-    ui.button_aplicar.clicked.connect(aplica_transformacoes)
+    ## Ao clicar em Aplicar, chama a função verifica_transformacoes
+    ui.button_aplicar.clicked.connect(verifica_transformacoes)
 
     # Fechando janela
     ui.button_close.clicked.connect(QtCore.QCoreApplication.instance().quit)

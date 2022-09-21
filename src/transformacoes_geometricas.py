@@ -1,4 +1,8 @@
 import numpy as np
+from modelos.poligono import Poligono
+
+from modelos.ponto import Ponto
+from modelos.reta import Reta
 
 class TransformacaoGeometrica:
     def __init__(self) -> None:
@@ -25,19 +29,36 @@ class TransformacaoGeometrica:
         matriz_escala = [[Sx, 0, 0], [0, Sy, 0], [0, 0, 1]]
         self.matriz = np.dot(matriz_escala, self.matriz)
 
-    def diminui_objeto(self):
-        # Diminui em 10% do tamanho atual
-        Sx = 0.9
-        Sy = 0.9
-        matriz_diminuir = [[Sx, 0, 0], [0, Sy, 0], [0, 0, 1]]
-        self.matriz = np.dot(matriz_diminuir, self.matriz)
-    
-    def amplia_objeto(self):
-        # Amplia em 10% do tamanho atual
-        Sx = 1.1
-        Sy = 1.1
-        matriz_ampliar = [[Sx, 0, 0], [0, Sy, 0], [0, 0, 1]]
-        self.matriz = np.dot(matriz_ampliar, self.matriz)
-
     def limpar(self):
         self.matriz = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+    def aplica_transformacoes_ponto(self, objeto_geometrico: Ponto):
+        matriz_aux_p1 = np.dot(self.matriz, objeto_geometrico.matriz)
+
+        # Cria um objeto geométrico auxiliar para retornar as novas
+        # coordenadas do ponto
+        objeto_geometrico_aux = Ponto(matriz_aux_p1[0], matriz_aux_p1[1])
+        return objeto_geometrico_aux
+
+    def aplica_transformacoes_reta(self, objeto_geometrico: Reta):
+        matriz_aux_p1 = np.dot(self.matriz, 
+                            objeto_geometrico.p1.matriz)
+        matriz_aux_p2 = np.dot(self.matriz, 
+                            objeto_geometrico.p2.matriz) 
+        
+        # Cria um objeto geométrico auxiliar para retornar as novas
+        # coordenadas da reta
+        objeto_geometrico_aux = Reta(Ponto(matriz_aux_p1[0], matriz_aux_p1[1]),
+                                     Ponto(matriz_aux_p2[0], matriz_aux_p2[1]))
+        return objeto_geometrico_aux  
+
+    def aplica_transformacoes_poligono(self, objeto_geometrico: Poligono):
+        lista_pontos_aux = []
+        for ponto in objeto_geometrico.lista_pontos:
+            matriz_aux_ponto = np.dot(self.matriz, ponto.matriz)         
+            lista_pontos_aux.append(Ponto(matriz_aux_ponto[0],matriz_aux_ponto[1]))
+
+        # Cria um objeto geométrico auxiliar para retornar as novas
+        # coordenadas do poligono
+        objeto_geometrico_aux = Poligono(lista_pontos_aux)
+        return objeto_geometrico_aux                              
