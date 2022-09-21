@@ -32,7 +32,7 @@ class Poligono:
                                     self.lista_pontos[i+1].x * self.lista_pontos[i].y
 
         area = 0.5 * parte_1_equacao_area
-
+        print(f'Area: {area}')
         # Fórmula das coordenadas do centro de um polígono
         sum_equacao_coord_Cx = 0
         sum_equacao_coord_Cy = 0
@@ -43,7 +43,9 @@ class Poligono:
             sum_equacao_coord_Cy += (self.lista_pontos[i].y + self.lista_pontos[i+1].y) * \
                                     (self.lista_pontos[i].x * self.lista_pontos[i+1].y - \
                                      self.lista_pontos[i+1].x * self.lista_pontos[i].y)
-
-        Cx = 1/(6*area) * sum_equacao_coord_Cx
-        Cy = 1/(6*area) * sum_equacao_coord_Cy
+        print(f'Sum Cx: {sum_equacao_coord_Cx}')
+        print(f'Sum Cy: {sum_equacao_coord_Cx}')
+        n_vertices = len(self.lista_pontos)
+        Cx = 1/(n_vertices*area) * sum_equacao_coord_Cx
+        Cy = 1/(n_vertices*area) * sum_equacao_coord_Cy
         return Cx, Cy

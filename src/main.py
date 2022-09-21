@@ -6,6 +6,7 @@ Disciplina: Computação Gráfica 2/2022
 
 import os
 import sys
+from this import d
 import numpy as np
 from PyQt5 import uic, QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF, QPen, QColor, QBrush
@@ -214,6 +215,10 @@ def controle_direita():
     ui.list_transformacoes.addItem(tag)
 
 def adiciona_lista_transformacoes():
+    '''
+    De acordo com a descrição na lista de transformações, 
+    é adicionado na matriz de transformações a transformações da descrição passada.
+    '''
     for index in range(ui.list_transformacoes.count()):
         # Verifica qual objeto está marcado na lista de objetos
         item_lista_transformacoes = ui.list_transformacoes.item(index).text()
@@ -240,7 +245,23 @@ def adiciona_lista_transformacoes():
             # Transladando 10 unidades para direita em X
             transformacoes.translacao(10, 0)
 
-def aplica_transformacoes(index):
+def aplica_transformacoes_objetos(index: int):
+    '''
+    Verifica qual objeto geometrico e aplica a transformação.
+    '''
+    if isinstance(dados_saida[index], Ponto):
+        dados_saida[index] = transformacoes.aplica_transformacoes_ponto(dados_saida[index])
+    elif isinstance(dados_saida[index], Reta):
+        dados_saida[index] = transformacoes.aplica_transformacoes_reta(dados_saida[index])
+    elif isinstance(dados_saida[index], Poligono):
+        dados_saida[index] = transformacoes.aplica_transformacoes_poligono(dados_saida[index])
+    else:
+        raise TypeError("Tipo de objeto não encontrado!")
+
+def constroi_matriz_transformacoes(index: int):
+    '''
+    Constroi a matriz de transformações.
+    '''
     # Transladando o centro do objeto para posição (0,0)
     x_centro, y_centro = dados_saida[index].centro_objeto()
     transformacoes.translacao(-x_centro, -y_centro)
@@ -251,32 +272,32 @@ def aplica_transformacoes(index):
     # Transladando o centro do objeto (0,0) para posição original
     transformacoes.translacao(x_centro, y_centro)
 
-    # Verifica qual objeto geometrico e aplica a transformação
-    if isinstance(dados_saida[index], Ponto):
-        dados_saida[index] = transformacoes.aplica_transformacoes_ponto(dados_saida[index])
-    elif isinstance(dados_saida[index], Reta):
-        dados_saida[index] = transformacoes.aplica_transformacoes_reta(dados_saida[index])
-    elif isinstance(dados_saida[index], Poligono):
-        dados_saida[index] = transformacoes.aplica_transformacoes_poligono(dados_saida[index])
-    else:
-        raise TypeError("Tipo de objeto não encontrado!")
-
-    # Limpa matriz de transformações
-    transformacoes.limpar()
-
 def verifica_transformacoes():
     flag_checked_object = False
     for index in range(ui.list_objects.count()):
         # Verifica qual objeto está marcado na lista de objetos
         # Se tiver objeto marcado chama a função aplica_transformacoes
-        if ui.list_objects.item(index).checkState() == QtCore.Qt.Checked:
-            flag_checked_object = True
-            aplica_transformacoes(index)
+        ## QtCore.Qt.Checked
+        if ui.list_objects.item(index).checkState() > 1:
+            if flag_checked_object:
+                # Não precisa construir a matriz de transformações, pois já foi construída.
+                aplica_transformacoes_objetos(index)
+            else:
+                # Se não tiver encontrado nenhum objeto marcado ainda,
+                # precisa construir a matriz de transformações,
+                # depois aplica as transformações nos objetos marcados
+                constroi_matriz_transformacoes(index)
+                aplica_transformacoes_objetos(index)
+                flag_checked_object = True
+            
 
-            # Limpa lista de objetos e carrega os objetos atualizados
-            atualiza_lista_objetos()
-            exibe_na_viewport()
+    # Limpa lista de objetos e carrega os objetos atualizados
+    atualiza_lista_objetos()
+    exibe_na_viewport()
     
+    # Limpa matriz de transformações
+    transformacoes.limpar()
+
     # Limpa lista de transformações
     ui.list_transformacoes.clear()
 
