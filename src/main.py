@@ -1,7 +1,6 @@
 '''
 Equipe: André Vinícius e Filipi Maciel
 Disciplina: Computação Gráfica 2/2022
-
 '''
 
 import os
@@ -19,6 +18,7 @@ from modelos.reta import Reta
 from modelos.poligono import Poligono
 from leitor_xml import LeitorEntradaXml
 from escritor_xml import gera_arquivo_saida
+from modelos.viewport import Viewport
 from transformacao import Transformacao
 from transformacoes_geometricas import TransformacaoGeometrica
 
@@ -33,7 +33,6 @@ def atualiza_lista_objetos():
 def browseFiles():
     '''
     Função que carrega o arquivo xml e já realiza a transformação dos pontos do objeto geométrico.
-
     '''
     try:
         # Configurando o botão Open File para abrir uma janela no diretório raiz
@@ -54,6 +53,9 @@ def browseFiles():
         # Realiza a transformação em cima dos dados lidos
         transformacao = Transformacao(
             dados_entrada_dict['window'], dados_entrada_dict['viewport'])
+
+        dados_saida.append(dados_entrada_dict['window'])
+        dados_saida.append(dados_entrada_dict['viewport'])
 
         for w_ponto in dados_entrada_dict['pontos']:
             v_ponto = transformacao.transformada_ponto(w_ponto)
@@ -274,23 +276,37 @@ def constroi_matriz_transformacoes(index: int):
 
 def verifica_transformacoes():
     flag_checked_object = False
-    for index in range(ui.list_objects.count()):
-        # Verifica qual objeto está marcado na lista de objetos
-        # Se tiver objeto marcado chama a função aplica_transformacoes
-        ## QtCore.Qt.Checked
-        if ui.list_objects.item(index).checkState() > 1:
-            if flag_checked_object:
-                # Não precisa construir a matriz de transformações, pois já foi construída.
-                aplica_transformacoes_objetos(index)
-            else:
-                # Se não tiver encontrado nenhum objeto marcado ainda,
-                # precisa construir a matriz de transformações,
-                # depois aplica as transformações nos objetos marcados
-                constroi_matriz_transformacoes(index)
-                aplica_transformacoes_objetos(index)
-                flag_checked_object = True
-            
+    # Verifica se a transformação será realizada com os objetos ou com a viewport
 
+    if ui.radioButton_objetos.isChecked():
+        for index in range(ui.list_objects.count()):
+            # Verifica qual objeto está marcado na lista de objetos
+            # Se tiver objeto marcado chama a função aplica_transformacoes
+            ## QtCore.Qt.Checked
+            if ui.list_objects.item(index).checkState() > 1:
+                if flag_checked_object:
+                    # Não precisa construir a matriz de transformações, pois já foi construída.
+                    aplica_transformacoes_objetos(index)
+                else:
+                    # Se não tiver encontrado nenhum objeto marcado ainda,
+                    # precisa construir a matriz de transformações,
+                    # depois aplica as transformações nos objetos marcados
+                    constroi_matriz_transformacoes(index)
+                    aplica_transformacoes_objetos(index)
+                    flag_checked_object = True
+
+        if not flag_checked_object:
+            print('Objeto Geométrico não selecionado!')
+    elif ui.radioButton_viewport.isChecked(): 
+        # Procura o index da viewport na lista de dados_saida
+        for index_aux in range(len(dados_saida)):
+            if isinstance(dados_saida[index_aux], Viewport):
+                index = index_aux    
+
+        constroi_matriz_transformacoes(index)
+        dados_saida[index] = transformacoes.aplica_transformacoes_viewport(viewport = dados_saida[index])
+
+        
     # Limpa lista de objetos e carrega os objetos atualizados
     atualiza_lista_objetos()
     exibe_na_viewport()
@@ -300,9 +316,6 @@ def verifica_transformacoes():
 
     # Limpa lista de transformações
     ui.list_transformacoes.clear()
-
-    if not flag_checked_object:
-        print('Objeto Geométrico não selecionado!')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
