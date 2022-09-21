@@ -164,7 +164,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_ponto_1_x"><!-- aqui é x ou y? -->
+   <widget class="QLabel" name="label_ponto_1_x">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -177,7 +177,7 @@
      <string>x:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_ponto_1_y"> <!-- é isso mesmo? -->
+   <widget class="QLabel" name="label_ponto_1_y">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -404,7 +404,7 @@
    <widget class="QPushButton" name="button_ampliar">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>210</x>
       <y>70</y>
       <width>71</width>
       <height>31</height>
@@ -417,7 +417,7 @@
    <widget class="QPushButton" name="button_baixo">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>120</x>
       <y>150</y>
       <width>71</width>
       <height>31</height>
@@ -430,7 +430,7 @@
    <widget class="QPushButton" name="button_girar_positivo">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>210</x>
       <y>150</y>
       <width>71</width>
       <height>31</height>
@@ -443,7 +443,7 @@
    <widget class="QPushButton" name="button_girar_negativo">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>30</x>
       <y>150</y>
       <width>71</width>
       <height>31</height>
@@ -456,7 +456,7 @@
    <widget class="QPushButton" name="button_direita">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>210</x>
       <y>110</y>
       <width>71</width>
       <height>31</height>
@@ -469,7 +469,7 @@
    <widget class="QRadioButton" name="radioButton_objetos">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>10</x>
       <y>40</y>
       <width>95</width>
       <height>20</height>
@@ -478,14 +478,20 @@
     <property name="text">
      <string>Objetos</string>
     </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
     <property name="checked">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
      <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="button_cima">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>120</x>
       <y>70</y>
       <width>71</width>
       <height>31</height>
@@ -498,7 +504,7 @@
    <widget class="QPushButton" name="button_diminuir">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>30</x>
       <y>70</y>
       <width>71</width>
       <height>31</height>
@@ -511,7 +517,7 @@
    <widget class="QPushButton" name="button_reset">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>30</x>
       <y>200</y>
       <width>100</width>
       <height>40</height>
@@ -524,7 +530,7 @@
    <widget class="QPushButton" name="button_esquerda">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>30</x>
       <y>110</y>
       <width>71</width>
       <height>31</height>
@@ -537,7 +543,7 @@
    <widget class="QRadioButton" name="radioButton_viewport">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>220</x>
       <y>40</y>
       <width>95</width>
       <height>20</height>
@@ -545,6 +551,51 @@
     </property>
     <property name="text">
      <string>Viewport</string>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_aplicar">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>200</y>
+      <width>100</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Aplicar</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="list_transformacoes">
+    <property name="geometry">
+     <rect>
+      <x>295</x>
+      <y>70</y>
+      <width>161</width>
+      <height>171</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>50</y>
+      <width>151</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>Transformações</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

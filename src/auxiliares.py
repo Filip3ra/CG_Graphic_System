@@ -3,9 +3,6 @@ import os
 import sys
 from PyQt5 import uic
 
-#ui = uic.loadUi(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                #"sistema-grafico.ui"))
-
 # converte o valor lido no meu dicionario de palavras para um valor numérico
 def converte_valores_dicionario_para_numerico(dic, int_ou_float):
     if int_ou_float != 'int' and int_ou_float != 'float':
