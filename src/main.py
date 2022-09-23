@@ -22,13 +22,15 @@ from modelos.viewport import Viewport
 from transformacao import Transformacao
 from transformacoes_geometricas import TransformacaoGeometrica
 
+
 def atualiza_lista_objetos():
     '''
     Função que limpa e atualiza a lista de objetos conforme os objetos presentes na lista dados_saida
     '''
     ui.list_objects.clear()
     for objeto in dados_saida:
-            ui.list_objects.addItem(objeto.__str__())
+        ui.list_objects.addItem(objeto.__str__())
+
 
 def browseFiles():
     '''
@@ -80,6 +82,7 @@ def browseFiles():
     except:
         pass
 
+
 def atualiza_objeto():
     '''
     Atualizando objeto para ficar com o checkbox False
@@ -90,6 +93,7 @@ def atualiza_objeto():
         item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
         item.setCheckState(QtCore.Qt.Unchecked)
         ui.list_objects.addItem(item)
+
 
 def exibe_na_viewport():
     ''' 
@@ -120,7 +124,7 @@ def exibe_na_viewport():
                 dados_saida[index].x, dados_saida[index].y, 1, 1, pen)
         elif isinstance(dados_saida[index], Reta):
             scene.addLine(dados_saida[index].p1.x, dados_saida[index].p1.y,
-                            dados_saida[index].p2.x, dados_saida[index].p2.y, pen)
+                          dados_saida[index].p2.x, dados_saida[index].p2.y, pen)
         elif isinstance(dados_saida[index], Poligono):
             polygon = QPolygonF()
             for ponto in dados_saida[index].lista_pontos:
@@ -130,7 +134,8 @@ def exibe_na_viewport():
 
         ui.graphics_view_viewport.setScene(scene)
 
-def adiciona_objeto():
+
+def att_opcao_selecionada():
     # Verifica o tipo do objeto
     if ui.radioButton_ponto.isChecked():
         ui.label_ponto_1_x.setDisabled(False)
@@ -147,8 +152,6 @@ def adiciona_objeto():
         ui.text_x_3.setDisabled(True)
         ui.label_ponto_3_y.setDisabled(True)
         ui.text_y_3.setDisabled(True)
-        print('Ok')
-
 
     elif ui.radioButton_reta.isChecked():
         # Se for a reta precisa permitir os campos de texto 2
@@ -186,37 +189,46 @@ def adiciona_objeto():
         ui.text_y_3.setDisabled(False)
         ui.button_add_ponto.setDisabled(False)
 
+
 def controle_diminuir():
     tag = 'Diminuir'
     ui.list_transformacoes.addItem(tag)
+
 
 def controle_ampliar():
     tag = 'Ampliar'
     ui.list_transformacoes.addItem(tag)
 
+
 def controle_girar_negativamente():
     tag = 'Girar Negativo'
     ui.list_transformacoes.addItem(tag)
+
 
 def controle_girar_positivamente():
     tag = 'Girar Positivo'
     ui.list_transformacoes.addItem(tag)
 
+
 def controle_cima():
     tag = 'Cima'
     ui.list_transformacoes.addItem(tag)
+
 
 def controle_baixo():
     tag = 'Baixo'
     ui.list_transformacoes.addItem(tag)
 
+
 def controle_esquerda():
     tag = 'Esquerda'
     ui.list_transformacoes.addItem(tag)
 
+
 def controle_direita():
     tag = 'Direita'
     ui.list_transformacoes.addItem(tag)
+
 
 def adiciona_lista_transformacoes():
     '''
@@ -249,18 +261,23 @@ def adiciona_lista_transformacoes():
             # Transladando 10 unidades para direita em X
             transformacoes.translacao(10, 0)
 
+
 def aplica_transformacoes_objetos(index: int):
     '''
     Verifica qual objeto geometrico e aplica a transformação.
     '''
     if isinstance(dados_saida[index], Ponto):
-        dados_saida[index] = transformacoes.aplica_transformacoes_ponto(dados_saida[index])
+        dados_saida[index] = transformacoes.aplica_transformacoes_ponto(
+            dados_saida[index])
     elif isinstance(dados_saida[index], Reta):
-        dados_saida[index] = transformacoes.aplica_transformacoes_reta(dados_saida[index])
+        dados_saida[index] = transformacoes.aplica_transformacoes_reta(
+            dados_saida[index])
     elif isinstance(dados_saida[index], Poligono):
-        dados_saida[index] = transformacoes.aplica_transformacoes_poligono(dados_saida[index])
+        dados_saida[index] = transformacoes.aplica_transformacoes_poligono(
+            dados_saida[index])
     else:
         raise TypeError("Tipo de objeto não encontrado!")
+
 
 def constroi_matriz_transformacoes(index: int):
     '''
@@ -276,6 +293,7 @@ def constroi_matriz_transformacoes(index: int):
     # Transladando o centro do objeto (0,0) para posição original
     transformacoes.translacao(x_centro, y_centro)
 
+
 def verifica_transformacoes():
     flag_checked_object = False
     # Verifica se a transformação será realizada com os objetos ou com a viewport
@@ -284,7 +302,7 @@ def verifica_transformacoes():
         for index in range(ui.list_objects.count()):
             # Verifica qual objeto está marcado na lista de objetos
             # Se tiver objeto marcado chama a função aplica_transformacoes
-            ## QtCore.Qt.Checked
+            # QtCore.Qt.Checked
             if ui.list_objects.item(index).checkState() > 1:
                 if flag_checked_object:
                     # Não precisa construir a matriz de transformações, pois já foi construída.
@@ -299,25 +317,26 @@ def verifica_transformacoes():
 
         if not flag_checked_object:
             print('Objeto Geométrico não selecionado!')
-    elif ui.radioButton_viewport.isChecked(): 
+    elif ui.radioButton_viewport.isChecked():
         # Procura o index da viewport na lista de dados_saida
         for index_aux in range(len(dados_saida)):
             if isinstance(dados_saida[index_aux], Viewport):
-                index = index_aux    
+                index = index_aux
 
         constroi_matriz_transformacoes(index)
-        dados_saida[index] = transformacoes.aplica_transformacoes_viewport(viewport = dados_saida[index])
+        dados_saida[index] = transformacoes.aplica_transformacoes_viewport(
+            viewport=dados_saida[index])
 
-        
     # Limpa lista de objetos e carrega os objetos atualizados
     atualiza_lista_objetos()
     exibe_na_viewport()
-    
+
     # Limpa matriz de transformações
     transformacoes.limpar()
 
     # Limpa lista de transformações
     ui.list_transformacoes.clear()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
@@ -335,16 +354,16 @@ if __name__ == "__main__":
 
     # Procurando arquivo no diretorio
     dados_saida = []
-   
+
     # Ao butão button_open for clicado, chama a função browseFiles
     ui.button_open.clicked.connect(browseFiles)
 
     # Ao pressionar o botão de adicionar um objeto, chama a função
-    ui.button_adicionar.pressed.connect(adiciona_objeto)
+    ui.button_atualizar.pressed.connect(att_opcao_selecionada)
 
     transformacoes = TransformacaoGeometrica()
 
-    ## Ao clicar nos butões das transformações geométricas 
+    # Ao clicar nos butões das transformações geométricas
     # é chamada a função específica para aquele butão
     ui.button_diminuir.clicked.connect(controle_diminuir)
     ui.button_ampliar.clicked.connect(controle_ampliar)
@@ -354,8 +373,8 @@ if __name__ == "__main__":
     ui.button_baixo.clicked.connect(controle_baixo)
     ui.button_esquerda.clicked.connect(controle_esquerda)
     ui.button_direita.clicked.connect(controle_direita)
-        
-    ## Ao clicar em Aplicar, chama a função verifica_transformacoes
+
+    # Ao clicar em Aplicar, chama a função verifica_transformacoes
     ui.button_aplicar.clicked.connect(verifica_transformacoes)
 
     # Fechando janela
