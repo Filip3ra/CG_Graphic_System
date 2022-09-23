@@ -10,7 +10,7 @@ import numpy as np
 from PyQt5 import uic, QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF, QPen, QColor, QBrush
 from PyQt5.QtCore import Qt, QPointF
-from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene
+from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene, QLineEdit, QLabel
 import matplotlib.colors as mcolors
 
 from modelos.ponto import Ponto
@@ -133,6 +133,16 @@ def exibe_na_viewport():
             scene.addPolygon(polygon, pen)
 
         ui.graphics_view_viewport.setScene(scene)
+
+
+# link referencia --> https://pythonpyqt.com/pyqt-label/
+# TODO como configurar 'self' nessa função? igual o exemplo do link...
+def adiciona_objeto():
+    label_x1 = QLabel('&label_ponto_1_x')
+    x1_LineEdit = QLineEdit()
+    label_x1.setBuddy(x1_LineEdit)
+
+    print(x1_LineEdit)
 
 
 def att_opcao_selecionada():
@@ -360,6 +370,7 @@ if __name__ == "__main__":
 
     # Ao pressionar o botão de adicionar um objeto, chama a função
     ui.button_atualizar.pressed.connect(att_opcao_selecionada)
+    ui.button_adicionar.pressed.connect(adiciona_objeto)
 
     transformacoes = TransformacaoGeometrica()
 
