@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Dialog</class>
+ 
+ <!-- BOTÃO OPEN -->
  <widget class="QDialog" name="Dialog">
   <property name="geometry">
    <rect>
@@ -26,6 +28,8 @@
     <string>Open</string>
    </property>
   </widget>
+
+<!-- TÍTULO LISTA DE OBJETOS -->
   <widget class="QLabel" name="label_objects">
    <property name="geometry">
     <rect>
@@ -45,6 +49,8 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+
+<!-- TÍTULO VIIEWPORT -->
   <widget class="QLabel" name="label_viewport">
    <property name="geometry">
     <rect>
@@ -61,6 +67,8 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  
+<!-- BOTÃO CLOSE -->
   <widget class="QPushButton" name="button_close">
    <property name="geometry">
     <rect>
@@ -74,6 +82,7 @@
     <string>Close</string>
    </property>
   </widget>
+
   <widget class="QGraphicsView" name="graphics_view_viewport">
    <property name="geometry">
     <rect>
@@ -84,6 +93,7 @@
     </rect>
    </property>
   </widget>
+
   <widget class="QListWidget" name="list_objects">
    <property name="geometry">
     <rect>
@@ -97,6 +107,7 @@
     <number>-1</number>
    </property>
   </widget>
+
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
@@ -112,6 +123,9 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+
+
+   <!-- BOTÕES REDONDOS -->
    <widget class="QRadioButton" name="radioButton_ponto">
     <property name="geometry">
      <rect>
@@ -154,6 +168,9 @@
      <string>Polígono</string>
     </property>
    </widget>
+
+
+    <!-- TEXTO -->
    <widget class="QTextEdit" name="text_x_1">
     <property name="geometry">
      <rect>
@@ -162,32 +179,6 @@
       <width>104</width>
       <height>31</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_ponto_1_x">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>90</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>x:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_ponto_1_y">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>90</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>y:</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="text_y_1">
@@ -250,6 +241,35 @@
       <width>104</width>
       <height>31</height>
      </rect>
+    </property>
+   </widget>
+
+
+<!-- LABLES -->
+   <widget class="QLabel" name="label_ponto_1_x">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>55</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_ponto_1_y">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>90</y>
+      <width>55</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>y:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_ponto_2_x">
@@ -316,6 +336,8 @@
      <string>y:</string>
     </property>
    </widget>
+
+<!-- CAIXA COM + -->
    <widget class="QPushButton" name="button_add_ponto">
     <property name="enabled">
      <bool>false</bool>
@@ -332,6 +354,8 @@
      <string>+</string>
     </property>
    </widget>
+
+<!-- BOTÃO ADICIONAR -->
    <widget class="QPushButton" name="button_adicionar">
     <property name="geometry">
      <rect>
@@ -345,6 +369,8 @@
      <string>Adicionar</string>
     </property>
    </widget>
+
+<!-- TEXTO MODIFICAÇÕES EM NEGRITO -->
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
@@ -364,9 +390,11 @@
     <property name="text">
      <string>Modificações</string>
     </property>
-   </widget>
+   </widget>   
   </widget>
+
   <widget class="QFrame" name="frame_3">
+   
    <property name="geometry">
     <rect>
      <x>789</x>
@@ -381,6 +409,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
@@ -401,6 +430,7 @@
      <string>Controle</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_ampliar">
     <property name="geometry">
      <rect>
@@ -414,6 +444,7 @@
      <string>Ampliar</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_baixo">
     <property name="geometry">
      <rect>
@@ -427,6 +458,7 @@
      <string>Baixo</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_girar_positivo">
     <property name="geometry">
      <rect>
@@ -440,6 +472,7 @@
      <string>Girar 10°</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_girar_negativo">
     <property name="geometry">
      <rect>
@@ -453,6 +486,7 @@
      <string>Girar -10°</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_direita">
     <property name="geometry">
      <rect>
@@ -466,6 +500,7 @@
      <string>Direita</string>
     </property>
    </widget>
+
    <widget class="QRadioButton" name="radioButton_objetos">
     <property name="geometry">
      <rect>
@@ -488,6 +523,7 @@
      <bool>true</bool>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_cima">
     <property name="geometry">
      <rect>
@@ -501,6 +537,7 @@
      <string>Cima</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_diminuir">
     <property name="geometry">
      <rect>
@@ -514,6 +551,7 @@
      <string>Diminuir</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_reset">
     <property name="geometry">
      <rect>
@@ -527,6 +565,7 @@
      <string>Reset</string>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_esquerda">
     <property name="geometry">
      <rect>
@@ -540,6 +579,7 @@
      <string>Esquerda</string>
     </property>
    </widget>
+
    <widget class="QRadioButton" name="radioButton_viewport">
     <property name="geometry">
      <rect>
@@ -556,6 +596,7 @@
      <bool>true</bool>
     </property>
    </widget>
+
    <widget class="QPushButton" name="button_aplicar">
     <property name="geometry">
      <rect>
@@ -569,6 +610,7 @@
      <string>Aplicar</string>
     </property>
    </widget>
+
    <widget class="QListWidget" name="list_transformacoes">
     <property name="geometry">
      <rect>
@@ -579,6 +621,7 @@
      </rect>
     </property>
    </widget>
+
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
@@ -599,6 +642,9 @@
     </property>
    </widget>
   </widget>
+
+
+
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>

@@ -148,6 +148,8 @@ def adiciona_objeto():
         ui.label_ponto_3_y.setDisabled(True)
         ui.text_y_3.setDisabled(True)
         print('Ok')
+
+
     elif ui.radioButton_reta.isChecked():
         # Se for a reta precisa permitir os campos de texto 2
         ui.label_ponto_1_x.setDisabled(False)
