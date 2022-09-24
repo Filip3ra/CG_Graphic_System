@@ -3,7 +3,7 @@ from modelos.poligono import Poligono
 
 from modelos.ponto import Ponto
 from modelos.reta import Reta
-from modelos.viewport import Viewport
+from modelos.window import Window
 
 class TransformacaoGeometrica:
     def __init__(self) -> None:
@@ -64,19 +64,19 @@ class TransformacaoGeometrica:
         objeto_geometrico_aux = Poligono(lista_pontos_aux)
         return objeto_geometrico_aux         
 
-    def aplica_transformacoes_viewport(self, viewport: Viewport) -> Viewport:
+    def aplica_transformacoes_window(self, window: Window) -> Window:
         '''
-        Aplica as transformações na Viewport e atualiza os pontos mínimos e máximos
+        Aplica as transformações na window e atualiza os pontos mínimos e máximos
         '''
-        viewport.p1.matriz = np.dot(self.matriz, viewport.p1.matriz)
-        viewport.p2.matriz = np.dot(self.matriz, viewport.p2.matriz)
-        viewport.p3.matriz = np.dot(self.matriz, viewport.p3.matriz)
-        viewport.p4.matriz = np.dot(self.matriz, viewport.p4.matriz)
+        window.p1.matriz = np.dot(self.matriz, window.p1.matriz)
+        window.p2.matriz = np.dot(self.matriz, window.p2.matriz)
+        window.p3.matriz = np.dot(self.matriz, window.p3.matriz)
+        window.p4.matriz = np.dot(self.matriz, window.p4.matriz)
 
         # Atualiza valores mínimos e máximos
-        viewport.xvmin = viewport.p1.x
-        viewport.yvmin = viewport.p1.y
-        viewport.xvmax = viewport.p3.x
-        viewport.yvmax = viewport.p3.y
+        window.xvmin = window.p1.x
+        window.yvmin = window.p1.y
+        window.xvmax = window.p3.x
+        window.yvmax = window.p3.y
 
-        return viewport
+        return window

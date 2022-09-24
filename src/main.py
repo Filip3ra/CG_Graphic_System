@@ -33,6 +33,32 @@ def atualiza_lista_objetos():
         ui.list_objects.addItem(objeto.__str__())
 
 
+def realiza_transformacao_dados(dados_entrada_dict: dict):
+    '''
+    Realiza a transformação em cima dos dados de entrada lidos.
+    '''
+
+    dados_saida.clear()
+    
+    transformacao = Transformacao(
+        dados_entrada_dict['window'], dados_entrada_dict['viewport'])
+
+    dados_saida.append(dados_entrada_dict['window'])
+    dados_saida.append(dados_entrada_dict['viewport'])
+
+    for w_ponto in dados_entrada_dict['pontos']:
+        v_ponto = transformacao.transformada_ponto(w_ponto)
+        dados_saida.append(v_ponto)
+
+    for w_reta in dados_entrada_dict['retas']:
+        v_reta = transformacao.transformada_reta(w_reta)
+        dados_saida.append(v_reta)
+
+    for w_poligono in dados_entrada_dict['poligonos']:
+        v_poligono = transformacao.transformada_poligono(w_poligono)
+        dados_saida.append(v_poligono)
+
+
 def browseFiles():
     '''
     Função que carrega o arquivo xml e já realiza a transformação dos pontos do objeto geométrico.
@@ -53,24 +79,7 @@ def browseFiles():
         scene.setSceneRect(
             0, 0, dados_entrada_dict["viewport"].xvmax, dados_entrada_dict["viewport"].yvmax)
 
-        # Realiza a transformação em cima dos dados lidos
-        transformacao = Transformacao(
-            dados_entrada_dict['window'], dados_entrada_dict['viewport'])
-
-        dados_saida.append(dados_entrada_dict['window'])
-        dados_saida.append(dados_entrada_dict['viewport'])
-
-        for w_ponto in dados_entrada_dict['pontos']:
-            v_ponto = transformacao.transformada_ponto(w_ponto)
-            dados_saida.append(v_ponto)
-
-        for w_reta in dados_entrada_dict['retas']:
-            v_reta = transformacao.transformada_reta(w_reta)
-            dados_saida.append(v_reta)
-
-        for w_poligono in dados_entrada_dict['poligonos']:
-            v_poligono = transformacao.transformada_poligono(w_poligono)
-            dados_saida.append(v_poligono)
+        realiza_transformacao_dados(dados_entrada_dict)
 
         # Adiciona cada objeto na lista
         atualiza_lista_objetos()
@@ -103,7 +112,7 @@ def exibe_na_viewport():
     atualiza_objeto()
 
     # Dicionário de cores para os objetos geométricos
-    dict_colors = mcolors.TABLEAU_COLORS
+    dict_colors = mcolors.CSS4_COLORS
     list_colors_iter = iter(dict_colors)
 
     # Limpa a tela
@@ -342,11 +351,14 @@ def verifica_transformacoes():
                     index = index_aux
             if index is not None:
                 constroi_matriz_transformacoes(index)
-                dados_saida[index] = transformacoes.aplica_transformacoes_viewport(
-                    viewport = dados_saida[index])
-            else:
-                print('Não foi encontrado o objeto window! Verifique se foi inserido o arquivo de entrada e se ele está correto.')
+                dados_saida[index] = transformacoes.aplica_transformacoes_window(
+                    window = dados_saida[index])
 
+                ## Precisa realizar as transformações nos dados novamente pois,
+                #  houve alteração na window
+                realiza_transformacao_dados(dados_entrada[0])
+            else:
+                print('Não foi encontrado o objeto window! Verifique se foi inserido o arquivo de entrada e se ele está correto.')       
         # Limpa lista de objetos e carrega os objetos atualizados
         atualiza_lista_objetos()
         exibe_na_viewport()

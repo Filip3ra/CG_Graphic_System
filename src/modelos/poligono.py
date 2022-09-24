@@ -22,29 +22,12 @@ class Poligono:
     def centro_objeto(self):
         '''
         Função que realiza o cálculo do centro do polígono. 
-        O cálculo apresentado nessa função foi baseado no seguinte site:
-        - https://dan-scientia.blogspot.com/2009/10/centroide-de-um-poligono.html
         '''
-        # Fórmula da área de um polígono
-        parte_1_equacao_area = 0
-        for i in range(len(self.lista_pontos)-1):
-            parte_1_equacao_area += self.lista_pontos[i].x * self.lista_pontos[i+1].y - \
-                                    self.lista_pontos[i+1].x * self.lista_pontos[i].y
-
-        area = 0.5 * parte_1_equacao_area
-
-        # Fórmula das coordenadas do centro de um polígono
-        sum_equacao_coord_Cx = 0
-        sum_equacao_coord_Cy = 0
-        for i in range(len(self.lista_pontos)-1):
-            sum_equacao_coord_Cx += (self.lista_pontos[i].x + self.lista_pontos[i+1].x) * \
-                                    (self.lista_pontos[i].x * self.lista_pontos[i+1].y - \
-                                     self.lista_pontos[i+1].x * self.lista_pontos[i].y)
-            sum_equacao_coord_Cy += (self.lista_pontos[i].y + self.lista_pontos[i+1].y) * \
-                                    (self.lista_pontos[i].x * self.lista_pontos[i+1].y - \
-                                     self.lista_pontos[i+1].x * self.lista_pontos[i].y)
-
-        n_vertices = len(self.lista_pontos)
-        Cx = 1/(n_vertices*area) * sum_equacao_coord_Cx
-        Cy = 1/(n_vertices*area) * sum_equacao_coord_Cy
+        soma_x = 0
+        soma_y = 0
+        for i in range(len(self.lista_pontos)):
+            soma_x += self.lista_pontos[i].x
+            soma_y += self.lista_pontos[i].y
+        Cx = soma_x / len(self.lista_pontos)
+        Cy = soma_y / len(self.lista_pontos)
         return Cx, Cy
