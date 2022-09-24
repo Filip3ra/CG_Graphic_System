@@ -19,6 +19,7 @@ from modelos.poligono import Poligono
 from leitor_xml import LeitorEntradaXml
 from escritor_xml import gera_arquivo_saida
 from modelos.viewport import Viewport
+from modelos.window import Window
 from transformacao import Transformacao
 from transformacoes_geometricas import TransformacaoGeometrica
 
@@ -305,47 +306,56 @@ def constroi_matriz_transformacoes(index: int):
 
 
 def verifica_transformacoes():
-    flag_checked_object = False
-    # Verifica se a transformação será realizada com os objetos ou com a viewport
+    if (len(dados_entrada) < 1) & (len(dados_saida) < 1):
+        # Não possui dados
+        print('O arquivo XML inserido está incorreto ou não foi inserido o arquivo de entrada.')
+        pass
+    else:        
+        flag_checked_object = False
+        # Verifica se a transformação será realizada com os objetos ou com a viewport
 
-    if ui.radioButton_objetos.isChecked():
-        for index in range(ui.list_objects.count()):
-            # Verifica qual objeto está marcado na lista de objetos
-            # Se tiver objeto marcado chama a função aplica_transformacoes
-            # QtCore.Qt.Checked
-            if ui.list_objects.item(index).checkState() > 1:
-                if flag_checked_object:
-                    # Não precisa construir a matriz de transformações, pois já foi construída.
-                    aplica_transformacoes_objetos(index)
-                else:
-                    # Se não tiver encontrado nenhum objeto marcado ainda,
-                    # precisa construir a matriz de transformações,
-                    # depois aplica as transformações nos objetos marcados
-                    constroi_matriz_transformacoes(index)
-                    aplica_transformacoes_objetos(index)
-                    flag_checked_object = True
+        if ui.radioButton_objetos.isChecked():
+            for index in range(ui.list_objects.count()):
+                # Verifica qual objeto está marcado na lista de objetos
+                # Se tiver objeto marcado chama a função aplica_transformacoes
+                # QtCore.Qt.Checked
+                if ui.list_objects.item(index).checkState() > 1:
+                    if flag_checked_object:
+                        # Não precisa construir a matriz de transformações, pois já foi construída.
+                        aplica_transformacoes_objetos(index)
+                    else:
+                        # Se não tiver encontrado nenhum objeto marcado ainda,
+                        # precisa construir a matriz de transformações,
+                        # depois aplica as transformações nos objetos marcados
+                        constroi_matriz_transformacoes(index)
+                        aplica_transformacoes_objetos(index)
+                        flag_checked_object = True
 
-        if not flag_checked_object:
-            print('Objeto Geométrico não selecionado!')
-    elif ui.radioButton_viewport.isChecked():
-        # Procura o index da viewport na lista de dados_saida
-        for index_aux in range(len(dados_saida)):
-            if isinstance(dados_saida[index_aux], Viewport):
-                index = index_aux
+            if not flag_checked_object:
+                print('Objeto Geométrico não selecionado!')
+        elif ui.radioButton_window.isChecked():
+            ui.button_reset.setDisabled(True)
+            # Procura o index da window na lista de dados_saida
+            index = None
+            for index_aux in range(len(dados_saida)):
+                if isinstance(dados_saida[index_aux], Window):
+                    index = index_aux
+            if index is not None:
+                constroi_matriz_transformacoes(index)
+                dados_saida[index] = transformacoes.aplica_transformacoes_viewport(
+                    viewport = dados_saida[index])
+            else:
+                print('Não foi encontrado o objeto window! Verifique se foi inserido o arquivo de entrada e se ele está correto.')
 
-        constroi_matriz_transformacoes(index)
-        dados_saida[index] = transformacoes.aplica_transformacoes_viewport(
-            viewport=dados_saida[index])
+        # Limpa lista de objetos e carrega os objetos atualizados
+        atualiza_lista_objetos()
+        exibe_na_viewport()
 
-    # Limpa lista de objetos e carrega os objetos atualizados
-    atualiza_lista_objetos()
-    exibe_na_viewport()
+        # Limpa matriz de transformações
+        transformacoes.limpar()
 
-    # Limpa matriz de transformações
-    transformacoes.limpar()
-
-    # Limpa lista de transformações
-    ui.list_transformacoes.clear()
+        # Limpa lista de transformações
+        ui.list_transformacoes.clear()
 
 
 if __name__ == "__main__":
