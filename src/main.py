@@ -23,6 +23,13 @@ from transformacao import Transformacao
 from transformacoes_geometricas import TransformacaoGeometrica
 
 
+dados_saida_xml = {
+    'pontos': [],
+    'retas': [],
+    'poligonos': []
+}
+
+
 def atualiza_lista_objetos():
     '''
     Função que limpa e atualiza a lista de objetos conforme os objetos presentes na lista dados_saida
@@ -76,9 +83,6 @@ def browseFiles():
 
         exibe_na_viewport()
 
-        # Salvando o arquivo
-        nome_arquivo_saida = '..\saida.csv'
-        gera_arquivo_saida(dados_saida, nome_arquivo_saida)
     except:
         pass
 
@@ -135,6 +139,12 @@ def exibe_na_viewport():
         ui.graphics_view_viewport.setScene(scene)
 
 
+def exporta_arquivo_xml():
+    # Salvando o arquivo
+    nome_arquivo_saida = '..\saida.xml'
+    gera_arquivo_saida(dados_saida_xml, nome_arquivo_saida)
+
+
 # link referencia --> https://pythonpyqt.com/pyqt-label/
 # TODO como configurar 'self' nessa função? igual o exemplo do link...
 def adiciona_objeto():
@@ -143,6 +153,11 @@ def adiciona_objeto():
     label_x1.setBuddy(x1_LineEdit)
 
     print(x1_LineEdit)
+
+# Essa função é um botão que serve pra atualizar qual opção selecionada
+# o usuário quer usar.
+# TODO deveria atualizar automaticamente quando a opção é selecionada,
+# despensando o botão, mas ainda não consegui pensar numa forma de fazer isso.
 
 
 def att_opcao_selecionada():
@@ -371,6 +386,9 @@ if __name__ == "__main__":
     # Ao pressionar o botão de adicionar um objeto, chama a função
     ui.button_atualizar.pressed.connect(att_opcao_selecionada)
     ui.button_adicionar.pressed.connect(adiciona_objeto)
+
+    # Ao pressionar o botão será gerado o arquivo de saída
+    ui.button_exportar.pressed.connect(exporta_arquivo_xml)
 
     transformacoes = TransformacaoGeometrica()
 
