@@ -5,9 +5,8 @@ import xml.etree.ElementTree as ET
 
 # Função para gerar um arquivo de sáida com as transformações aplicadas na entrada.
 
-
-
-def gera_arquivo_saida(dados_saida, nome_arquivo_saida):
+def gera_arquivo_saida(dados_saida: list, 
+                       nome_arquivo_saida: str):
     # O array 'dados' irá guardar as informações contitas em 'dados_saida'
     dados = []
     raiz = ET.Element('root')
@@ -40,4 +39,3 @@ def gera_arquivo_saida(dados_saida, nome_arquivo_saida):
     
     arvore.write(nome_arquivo_saida, encoding = "utf-8", xml_declaration = True)
     print('Arquivo gerado com sucesso!')
-    
