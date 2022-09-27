@@ -5,6 +5,7 @@ Disciplina: Computação Gráfica 2/2022
 
 import os
 import sys
+
 from PyQt5 import uic, QtWidgets
 from PyQt5.QtGui import QPen, QColor
 from PyQt5.QtWidgets import QGraphicsScene
@@ -25,5 +26,6 @@ if __name__ == "__main__":
 
     ui.show()
     aplicacao(ui = ui, scene = scene)
+
 
     sys.exit(app.exec_())
