@@ -4,7 +4,7 @@ from modelos.ponto import Ponto
 from modelos.poligono import Poligono
 
 
-class Transformacao:
+class TransformadaViewport:
     def __init__(self, window_param, viewport_param):
         self.window = window_param
         self.viewport = viewport_param

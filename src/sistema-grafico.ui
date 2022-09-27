@@ -615,6 +615,19 @@
     </property>
    </widget>
   </widget>
+  <widget class="QPushButton" name="button_exportar">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>680</y>
+     <width>75</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Exportar</string>
+   </property>
+  </widget>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>

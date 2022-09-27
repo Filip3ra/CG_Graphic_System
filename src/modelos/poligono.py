@@ -1,5 +1,7 @@
 import numpy as np
 
+from transformacoes_geometricas import TransformacaoGeometrica
+
 class Poligono:
     '''
     Classe para representar o objeto geométrico Poligono.
@@ -12,6 +14,7 @@ class Poligono:
                 "O polígono precisa ter no mínimo três pontos que não sejam coincidentes")
         else:
             self.lista_pontos = lista_pontos
+            self.lista_pontos_original = lista_pontos
 
     def __str__(self) -> str:
         str_ = 'Poligono: '
@@ -31,3 +34,11 @@ class Poligono:
         Cx = soma_x / len(self.lista_pontos)
         Cy = soma_y / len(self.lista_pontos)
         return Cx, Cy
+
+    def aplica_transformacoes(self, transformacoes: TransformacaoGeometrica):
+        for index in range(len(self.lista_pontos)):
+            self.lista_pontos[index].aplica_transformacoes(transformacoes)
+
+    def atualiza_valores_PPC(self, transformacao, angulo):
+        for index in range(len(self.lista_pontos)):
+            self.lista_pontos[index].atualiza_valores_PPC(transformacao, angulo)

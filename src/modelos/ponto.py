@@ -1,4 +1,7 @@
+import numpy as np
+
 from auxiliares import converte_valores_dicionario_para_numerico
+from transformacoes_geometricas import TransformacaoGeometrica
 
 class Ponto:
     '''
@@ -16,7 +19,11 @@ class Ponto:
         else:
             self.x = x
             self.y = y
+            # Coordenadas do PPC
+            self.x_original = x
+            self.y_original = y
             self.matriz = [x, y, 1]
+            self.matriz_original = [x, y, 1]
 
     def __str__(self) -> str:
         return f'Ponto: ({self.x}, {self.y})'
@@ -28,3 +35,15 @@ class Ponto:
     def cria_atributos_dicionario_do_xml_int(dic):
         dic = converte_valores_dicionario_para_numerico(dic, 'float')
         return Ponto(dic['x'], dic['y'])
+
+    def aplica_transformacoes(self, transformacoes: TransformacaoGeometrica):
+        self.matriz = np.dot(transformacoes.matriz, self.matriz)
+        self.x = self.matriz[0]
+        self.y = self.matriz[1]
+
+    def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica, angulo):        
+        self.matriz = np.dot(transformacao.matriz, self.matriz)
+        self.x = self.matriz[0]
+        self.y = self.matriz[1]
+    
+

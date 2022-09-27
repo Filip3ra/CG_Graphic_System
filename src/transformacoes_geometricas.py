@@ -1,9 +1,4 @@
 import numpy as np
-from modelos.poligono import Poligono
-
-from modelos.ponto import Ponto
-from modelos.reta import Reta
-from modelos.window import Window
 
 class TransformacaoGeometrica:
     def __init__(self) -> None:
@@ -32,51 +27,3 @@ class TransformacaoGeometrica:
 
     def limpar(self):
         self.matriz = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-
-    def aplica_transformacoes_ponto(self, objeto_geometrico: Ponto) -> Ponto:
-        matriz_aux_p1 = np.dot(self.matriz, objeto_geometrico.matriz)
-
-        # Cria um objeto geométrico auxiliar para retornar as novas
-        # coordenadas do ponto
-        objeto_geometrico_aux = Ponto(matriz_aux_p1[0], matriz_aux_p1[1])
-        return objeto_geometrico_aux
-
-    def aplica_transformacoes_reta(self, objeto_geometrico: Reta) -> Reta:
-        matriz_aux_p1 = np.dot(self.matriz, 
-                            objeto_geometrico.p1.matriz)
-        matriz_aux_p2 = np.dot(self.matriz, 
-                            objeto_geometrico.p2.matriz) 
-        
-        # Cria um objeto geométrico auxiliar para retornar as novas
-        # coordenadas da reta
-        objeto_geometrico_aux = Reta(Ponto(matriz_aux_p1[0], matriz_aux_p1[1]),
-                                     Ponto(matriz_aux_p2[0], matriz_aux_p2[1]))
-        return objeto_geometrico_aux  
-
-    def aplica_transformacoes_poligono(self, objeto_geometrico: Poligono) -> Poligono:
-        lista_pontos_aux = []
-        for ponto in objeto_geometrico.lista_pontos:
-            matriz_aux_ponto = np.dot(self.matriz, ponto.matriz)         
-            lista_pontos_aux.append(Ponto(matriz_aux_ponto[0],matriz_aux_ponto[1]))
-
-        # Cria um objeto geométrico auxiliar para retornar as novas
-        # coordenadas do poligono
-        objeto_geometrico_aux = Poligono(lista_pontos_aux)
-        return objeto_geometrico_aux         
-
-    def aplica_transformacoes_window(self, window: Window) -> Window:
-        '''
-        Aplica as transformações na window e atualiza os pontos mínimos e máximos
-        '''
-        window.p1.matriz = np.dot(self.matriz, window.p1.matriz)
-        window.p2.matriz = np.dot(self.matriz, window.p2.matriz)
-        window.p3.matriz = np.dot(self.matriz, window.p3.matriz)
-        window.p4.matriz = np.dot(self.matriz, window.p4.matriz)
-
-        # Atualiza valores mínimos e máximos
-        window.xvmin = window.p1.x
-        window.yvmin = window.p1.y
-        window.xvmax = window.p3.x
-        window.yvmax = window.p3.y
-
-        return window
