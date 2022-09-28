@@ -1,9 +1,10 @@
 import numpy as np
 
+from modelos.objeto_geometrico import ObjetoGeometrico
 from auxiliares import converte_valores_dicionario_para_numerico
 from transformacoes_geometricas import TransformacaoGeometrica
 
-class Ponto:
+class Ponto(ObjetoGeometrico):
     '''
     Classe para representar o objeto geométrico Ponto.
     '''

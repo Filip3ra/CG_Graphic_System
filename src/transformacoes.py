@@ -1,13 +1,13 @@
 import numpy as np
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QGraphicsScene
 
 from graficos import atualiza_lista_objetos, exibe_na_viewport
+from modelos.objeto_geometrico import ObjetoGeometrico
 from modelos.poligono import Poligono
 from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.window import Window
 from transformacoes_geometricas import TransformacaoGeometrica
-from transformada_viewport import TransformadaViewport
 
 
 def adiciona_lista_transformacoes(ui: QDialog, 
@@ -42,7 +42,7 @@ def adiciona_lista_transformacoes(ui: QDialog,
             # Transladando 10 unidades para direita em X
             transformacoes.translacao(10, 0)
 
-def aplica_transformacoes_objetos(objeto_geometrico, 
+def aplica_transformacoes_objetos(objeto_geometrico: ObjetoGeometrico, 
                                   transformacoes: TransformacaoGeometrica):
     '''
     Verifica qual objeto geometrico e aplica a transformação.
@@ -59,7 +59,7 @@ def aplica_transformacoes_objetos(objeto_geometrico,
     return objeto_geometrico
 
 def constroi_matriz_transformacoes(ui: QDialog,
-                                   objeto_geometrico):
+                                   objeto_geometrico: ObjetoGeometrico):
     '''
     Constroi a matriz de transformações.
     '''
@@ -80,7 +80,7 @@ def constroi_matriz_transformacoes(ui: QDialog,
 
 
 def verifica_transformacoes(ui: QDialog, 
-                            scene, 
+                            scene: QGraphicsScene, 
                             dados_entrada: list,
                             dados_saida: list):
     if len(dados_saida) < 1:

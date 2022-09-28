@@ -1,8 +1,9 @@
 import numpy as np
 
 from transformacoes_geometricas import TransformacaoGeometrica
+from modelos.objeto_geometrico import ObjetoGeometrico
 
-class Poligono:
+class Poligono(ObjetoGeometrico):
     '''
     Classe para representar o objeto geométrico Poligono.
 

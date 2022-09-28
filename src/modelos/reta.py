@@ -2,9 +2,9 @@ import numpy as np
 from modelos.ponto import Ponto
 
 from transformacoes_geometricas import TransformacaoGeometrica
+from modelos.objeto_geometrico import ObjetoGeometrico
 
-
-class Reta:
+class Reta(ObjetoGeometrico):
     '''
     Classe para representar o objeto geométrico Reta.
 

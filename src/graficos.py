@@ -5,13 +5,13 @@ import matplotlib.colors as mcolors
 from PyQt5 import QtCore
 
 from leitor_xml import LeitorEntradaXml
-from escritor_xml import gera_arquivo_saida
 from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.poligono import Poligono
 from transformada_viewport import TransformadaViewport
 
-def realiza_transformacao_dados(dados_entrada_dict: dict, dados_saida: list):
+def realiza_transformacao_dados(dados_entrada_dict: dict,
+                                dados_saida: list):
     '''
     Realiza a transformação em cima dos dados de entrada lidos.
     '''
@@ -34,7 +34,8 @@ def realiza_transformacao_dados(dados_entrada_dict: dict, dados_saida: list):
         dados_saida.append(v_poligono)
 
 
-def atualiza_lista_objetos(ui, dados_saida: list):
+def atualiza_lista_objetos(ui: QDialog,
+                           dados_saida: list):
     '''
     Função que limpa e atualiza a lista de objetos conforme os objetos presentes na lista dados_saida
     '''
@@ -46,7 +47,7 @@ def atualiza_lista_objetos(ui, dados_saida: list):
 def browseFiles(ui: QDialog,
                 dados_entrada: list,
                 dados_saida: list,
-                scene):
+                scene: QGraphicsScene):
     '''
     Função que carrega o arquivo xml e já realiza a transformação dos pontos do objeto geométrico.
     '''
@@ -94,7 +95,7 @@ def atualiza_objeto(ui: QDialog):
 
 
 def exibe_na_viewport(ui: QDialog,
-                      scene,
+                      scene: QGraphicsScene,
                       dados_entrada: list,
                       dados_saida: list):
     ''' 
@@ -146,7 +147,7 @@ def adiciona_objeto():
     print(x1_LineEdit)
 
 
-def att_opcao_selecionada(ui):
+def att_opcao_selecionada(ui: QDialog):
     # Verifica o tipo do objeto
     if ui.radioButton_ponto.isChecked():
         ui.label_ponto_1_x.setDisabled(False)
