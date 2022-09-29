@@ -1,8 +1,9 @@
-import numpy as np
+import math
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QGraphicsScene
 
 from graficos import atualiza_lista_objetos, exibe_na_viewport
-from mapeadores.window_to_ppc import WindowToPPC, window_to_PPC
+from mapeadores.window_to_ppc import window_to_PPC
 from mapeadores.window_to_viewport import TransformadaViewport
 from modelos.objeto_geometrico import ObjetoGeometrico
 from modelos.poligono import Poligono
@@ -12,38 +13,28 @@ from modelos.window import Window
 from transformacoes_geometricas import TransformacaoGeometrica
 
 
-def adiciona_lista_transformacoes(ui: QDialog, 
-                                  transformacoes: TransformacaoGeometrica):
+def adiciona_lista_transformacoes(ui: QDialog):
     '''
-    De acordo com a descrição na lista de transformações, 
-    é adicionado na matriz de transformações a transformações da descrição passada.
+    Adiciona a descrição das transformações na lista de transformações dos objetos.
     '''
-    for index in range(ui.list_transformacoes.count()):
-        # Verifica qual objeto está marcado na lista de objetos
-        item_lista_transformacoes = ui.list_transformacoes.item(index).text()
-        if item_lista_transformacoes == 'Ampliar':
-            transformacoes.escala(1.1, 1.1)
-        elif item_lista_transformacoes == 'Diminuir':
-            transformacoes.escala(0.9, 0.9)
-        elif item_lista_transformacoes == 'Girar Negativamente':
-            # Rotacionando -10° = -0.1745 rad
-            transformacoes.rotacao(-0.1745)
-        elif item_lista_transformacoes == 'Girar Positivamente':
-            # Rotacionando 10° = 0.1745 rad
-            transformacoes.rotacao(-0.1745)
-        elif item_lista_transformacoes == 'Cima':
-            # Transladando 10 unidades para cima em Y
-            transformacoes.translacao(0, 10)
-        elif item_lista_transformacoes == 'Baixo':
-            # Transladando 10 unidades para baixo em X
-            transformacoes.translacao(0, -10)
-        elif item_lista_transformacoes == 'Esquerda':
-            # Transladando 10 unidades para esquerda em X
-            transformacoes.translacao(-10, 0)
-        elif item_lista_transformacoes == 'Direita':
-            # Transladando 10 unidades para direita em X
-            transformacoes.translacao(10, 0)
+    valor_x = ui.text_controle_x.toPlainText()
+    valor_y = ui.text_controle_y.toPlainText()
 
+    if ui.radioButton_translacao.isChecked():
+        operacao = 'Translação'
+    if ui.radioButton_rotacao.isChecked():
+        operacao = 'Rotação'
+    if ui.radioButton_escala.isChecked():
+        operacao = 'Escala'
+
+    num_linhas = ui.tableWidget.rowCount()
+    ui.tableWidget.setRowCount(num_linhas+1)
+    ui.tableWidget.setColumnCount(3)
+
+    ui.tableWidget.setItem(num_linhas, 0, QtWidgets.QTableWidgetItem(operacao))
+    ui.tableWidget.setItem(num_linhas, 1, QtWidgets.QTableWidgetItem(valor_x))
+    ui.tableWidget.setItem(num_linhas, 2, QtWidgets.QTableWidgetItem(valor_y))
+            
 def aplica_transformacoes_objetos(objeto_geometrico: ObjetoGeometrico, 
                                   transformacoes: TransformacaoGeometrica):
     '''
@@ -60,7 +51,7 @@ def aplica_transformacoes_objetos(objeto_geometrico: ObjetoGeometrico,
 
     return objeto_geometrico
 
-def constroi_matriz_transformacoes(ui: QDialog,
+def atualiza_matriz_transformacoes(ui: QDialog,
                                    objeto_geometrico: ObjetoGeometrico) -> TransformacaoGeometrica:
     '''
     Constroi a matriz de transformações.
@@ -80,11 +71,40 @@ def constroi_matriz_transformacoes(ui: QDialog,
 
     return transformacoes
 
+def constroi_matriz_transformacoes(ui: QDialog,
+                                   objeto_geometrico: ObjetoGeometrico) -> TransformacaoGeometrica:
+    '''
+    Constroi a matriz de transformações.
+    '''
+    transformacoes = TransformacaoGeometrica()
 
-def verifica_transformacoes(ui: QDialog, 
-                            scene: QGraphicsScene, 
-                            dados_entrada: list,
-                            dados_saida: list):
+    # Transladando o centro do objeto para posição (0,0)
+    x_centro, y_centro = objeto_geometrico.centro_objeto()
+    transformacoes.translacao(-x_centro, -y_centro)
+
+    # Aplicando as transformações que estiverem na lista de transformações
+    for index in range(ui.tableWidget.rowCount()):
+        try:
+            valor_x = int(ui.tableWidget.item(index, 1).text())
+            valor_y = int(ui.tableWidget.item(index, 2).text())
+            if str(ui.tableWidget.item(index, 0).text()) == 'Translação':
+                transformacoes.translacao(valor_x, valor_y)
+            elif str(ui.tableWidget.item(index, 0).text()) == 'Rotação':
+                valor_x_rad = math.radians(valor_x)
+                transformacoes.rotacao(valor_x_rad)
+            elif str(ui.tableWidget.item(index, 0).text()) == 'Escala':
+                transformacoes.escala(valor_x, valor_y)
+        except:
+            pass
+    # Transladando o centro do objeto (0,0) para posição original
+    transformacoes.translacao(x_centro, y_centro)
+
+    return transformacoes
+
+def verifica_transformacoes_objetos(ui: QDialog, 
+                                    scene: QGraphicsScene, 
+                                    dados_entrada: list,
+                                    dados_saida: list):
     if len(dados_saida) < 1:
         # Não possui dados
         print('O arquivo XML inserido está incorreto ou não foi inserido o arquivo de entrada.')
@@ -92,61 +112,20 @@ def verifica_transformacoes(ui: QDialog,
     else:
         transformacoes = TransformacaoGeometrica()
         flag_checked_object = False
-        # Verifica se a transformação será realizada com os objetos ou com a viewport
+        for index in range(ui.list_objects.count()):
+            # Verifica qual objeto está marcado na lista de objetos
+            # Se tiver objeto marcado chama a função aplica_transformacoes
+            if ui.list_objects.item(index).checkState() > 1:
+                flag_checked_object = True
+                transformacoes = constroi_matriz_transformacoes(ui= ui,
+                                                                objeto_geometrico= dados_saida[index],)
 
-        if ui.radioButton_objetos.isChecked():
-            for index in range(ui.list_objects.count()):
-                # Verifica qual objeto está marcado na lista de objetos
-                # Se tiver objeto marcado chama a função aplica_transformacoes
-                # QtCore.Qt.Checked
-                if ui.list_objects.item(index).checkState() > 1:
-                    if flag_checked_object:
-                        # Não precisa construir a matriz de transformações, pois já foi construída.
-                        dados_saida[index] = aplica_transformacoes_objetos(objeto_geometrico= dados_saida[index],
-                                                                           transformacoes= transformacoes)
-                    else:
-                        
-                        # Se não tiver encontrado nenhum objeto marcado ainda,
-                        # precisa construir a matriz de transformações,
-                        # depois aplica as transformações nos objetos marcados
-                        transformacoes = constroi_matriz_transformacoes(ui= ui,
-                                                                        objeto_geometrico= dados_saida[index],)
+                dados_saida[index] = aplica_transformacoes_objetos(objeto_geometrico= dados_saida[index],
+                                                                   transformacoes= transformacoes)
 
-                        dados_saida[index] = aplica_transformacoes_objetos(objeto_geometrico= dados_saida[index],
-                                                                           transformacoes= transformacoes)
-
-                        flag_checked_object = True
-
-            if not flag_checked_object:
-                # TODO Exibir alerta
-                print('Objeto Geométrico não selecionado!')
-        elif ui.radioButton_window.isChecked():
-            ui.button_reset.setDisabled(True)
-            for index in range(ui.list_transformacoes.count()):
-                # Verifica qual objeto está marcado na lista de objetos
-                tag_transformacao = ui.list_transformacoes.item(index).text()
-            
-                dados_entrada[0]['window'].aplica_transformacoes(tag_transformacao)
-                dados_entrada[0]['window'], transformacoes_aux = window_to_PPC(dados_entrada[0]['window'])
-
-                for index in range(len(dados_saida)):
-                    try:
-                        # Atualizo somente para ponto, reta e poligono, pois somente eles tem o método atualiza_valores_PPC
-                        dados_saida[index].atualiza_valores_PPC(transformacoes_aux)   
-                    except:
-                        pass 
-
-                # Window -> viewport
-                transformada = TransformadaViewport(dados_entrada[0]['window'],
-                                                    dados_entrada[0]['viewport'])
-                                                    
-                for index in range(len(dados_saida)):
-                    if isinstance(dados_saida[index], Ponto):
-                        dados_saida[index] = transformada.transformada_ponto(dados_saida[index])
-                    elif isinstance(dados_saida[index], Reta):
-                        dados_saida[index] = transformada.transformada_reta(dados_saida[index])
-                    elif isinstance(dados_saida[index], Poligono):
-                        dados_saida[index] = transformada.transformada_poligono(dados_saida[index])
+        if not flag_checked_object:
+            # TODO Exibir alerta
+            print('Objeto Geométrico não selecionado!')
 
         atualiza_lista_objetos(ui= ui,
                                dados_saida= dados_saida)
@@ -158,6 +137,47 @@ def verifica_transformacoes(ui: QDialog,
         # Limpa matriz de transformações
         transformacoes.limpar()
 
-        # Limpa lista de transformações
-        ui.list_transformacoes.clear()
+        # Limpa tabela de transformações
+        ui.tableWidget.clear()  
+        ui.tableWidget.setRowCount(0)  
+        ui.tableWidget.setColumnCount(0)
+        ## TODO Colocar nomes nas colunas
 
+
+def adiciona_transformacao(ui: QDialog):
+    adiciona_lista_transformacoes(ui= ui)
+
+def atualiza_window(ui: QDialog,
+                    scene: QGraphicsScene,
+                    dados_entrada: list,
+                    dados_saida: list,
+                    tag_transformacao: str):
+    dados_entrada[0]['window'].aplica_transformacoes(tag_transformacao)
+    dados_entrada[0]['window'], transformacoes_aux = window_to_PPC(dados_entrada[0]['window'])
+
+    for index in range(len(dados_saida)):
+        try:
+            # Atualizo somente para ponto, reta e poligono, pois somente eles tem o método atualiza_valores_PPC
+            dados_saida[index].atualiza_valores_PPC(transformacoes_aux)   
+        except:
+            pass 
+
+    # Window -> viewport
+    transformada = TransformadaViewport(dados_entrada[0]['window'],
+                                        dados_entrada[0]['viewport'])
+                                        
+    for index in range(len(dados_saida)):
+        if isinstance(dados_saida[index], Ponto):
+            dados_saida[index] = transformada.transformada_ponto(dados_saida[index])
+        elif isinstance(dados_saida[index], Reta):
+            dados_saida[index] = transformada.transformada_reta(dados_saida[index])
+        elif isinstance(dados_saida[index], Poligono):
+            dados_saida[index] = transformada.transformada_poligono(dados_saida[index])
+
+    atualiza_lista_objetos(ui= ui,
+                           dados_saida= dados_saida)
+
+    exibe_na_viewport(ui= ui,
+                      scene= scene,
+                      dados_entrada=dados_entrada,
+                      dados_saida= dados_saida)

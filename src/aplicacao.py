@@ -2,10 +2,8 @@ from PyQt5 import QtCore, QtWidgets
 from escritor_xml import gera_arquivo_saida
 
 from graficos import browseFiles, att_opcao_selecionada, adiciona_objeto
-from transformacoes import verifica_transformacoes
-
-def controle(ui, tag: str):
-    ui.list_transformacoes.addItem(tag)
+from transformacoes import adiciona_lista_transformacoes, atualiza_window, verifica_transformacoes_objetos
+from transformacoes_geometricas import TransformacaoGeometrica
 
 def exporta_arquivo_xml(dados_saida: list):
     '''
@@ -30,18 +28,51 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
 
     # Ao clicar nos butões das transformações geométricas
     # é chamada a função específica para aquele butão
-    #ui.button_diminuir.clicked.connect(controle_diminuir)
-    ui.button_diminuir.clicked.connect(lambda: controle(ui = ui, tag = 'Diminuir'))
-    ui.button_ampliar.clicked.connect(lambda: controle(ui = ui, tag = 'Ampliar'))
-    ui.button_girar_negativo.clicked.connect(lambda: controle(ui = ui, tag = 'Girar Negativamente'))
-    ui.button_girar_positivo.clicked.connect(lambda: controle(ui = ui, tag = 'Girar Positivamente'))
-    ui.button_cima.clicked.connect(lambda: controle(ui = ui, tag = 'Cima'))
-    ui.button_baixo.clicked.connect(lambda: controle(ui = ui, tag = 'Baixo'))
-    ui.button_esquerda.clicked.connect(lambda: controle(ui = ui, tag = 'Esquerda'))
-    ui.button_direita.clicked.connect(lambda: controle(ui = ui, tag = 'Direita'))
+    ui.button_diminuir.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Diminuir'))
+    ui.button_ampliar.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Ampliar'))
+    ui.button_girar_negativo.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Girar Negativamente'))
+    ui.button_girar_positivo.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Girar Positivamente'))
+    ui.button_cima.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Cima'))
+    ui.button_baixo.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Baixo'))
+    ui.button_esquerda.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Esquerda'))
+    ui.button_direita.clicked.connect(lambda: atualiza_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,
+                                                            tag_transformacao = 'Direita'))
+    
+    ui.button_add_controle.clicked.connect(lambda: adiciona_lista_transformacoes(ui= ui))
 
     # Ao clicar em Aplicar, chama a função verifica_transformacoes
-    ui.button_aplicar.clicked.connect(lambda: verifica_transformacoes(ui= ui,
+    ui.button_aplicar.clicked.connect(lambda: verifica_transformacoes_objetos(ui= ui,
                                                                       scene= scene,
                                                                       dados_entrada = dados_entrada,
                                                                       dados_saida= dados_saida))

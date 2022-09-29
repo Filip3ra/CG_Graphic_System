@@ -9,8 +9,8 @@ def window_to_PPC(window: Window):
 
     # 1 - Transladando o centro do objeto para posição (0,0)
     x_centro, y_centro = window_ppc.centro_objeto()
-    transformacoes_aux = TransformacaoGeometrica()
-    transformacoes_aux.translacao(-x_centro, -y_centro)
+    window_ppc.aplica_translacao_x(-x_centro)
+    window_ppc.aplica_translacao_y(-y_centro)
 
     # 2 - Determina o ângulo de Vup com Y
     Vup = window_ppc.Vup
@@ -25,9 +25,10 @@ def window_to_PPC(window: Window):
         angulo_para_rotacionar_mundo = - math.radians(np.arctan(np.abs(1/m_Vup)))
 
         print(f'Angulo: {angulo_para_rotacionar_mundo:.2f}')
-        transformacoes_aux.rotacao()
+        window_ppc.aplica_rotacao(angulo_para_rotacionar_mundo)
 
     # 4 Aplica transformações na window e demais objetos
+    transformacoes_aux = TransformacaoGeometrica()
     window_ppc.ponto_min.atualiza_valores_PPC(transformacoes_aux)
     window_ppc.ponto_max.atualiza_valores_PPC(transformacoes_aux)
 

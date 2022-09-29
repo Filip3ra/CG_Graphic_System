@@ -65,7 +65,10 @@ def browseFiles(ui: QDialog,
 
         # Configurando a cena com o tamanho da viewport passada
         scene.setSceneRect(
-            0, 0, dados_entrada_dict["viewport"].xvmax, dados_entrada_dict["viewport"].yvmax)
+            0, 0, 
+            dados_entrada_dict["viewport"].ponto_max.x, 
+            dados_entrada_dict["viewport"].ponto_max.y
+        )
 
         realiza_transformacao_dados(dados_entrada_dict= dados_entrada_dict, 
                                     dados_saida= dados_saida)
@@ -111,8 +114,10 @@ def exibe_na_viewport(ui: QDialog,
     scene.clear()
 
     # Adicionando retângulo conforme o viewport passado
-    scene.addRect(0, 0, dados_entrada[0]["viewport"].xvmax,
-                  dados_entrada[0]["viewport"].yvmax, QPen(QColor("black")))
+    scene.addRect(0, 0, 
+                  dados_entrada[0]["viewport"].ponto_max.x,
+                  dados_entrada[0]["viewport"].ponto_max.y,
+                  QPen(QColor("black")))
 
     for index in range(ui.list_objects.count()):
         # Adicionando uma cor para cada objeto
