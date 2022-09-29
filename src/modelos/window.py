@@ -2,7 +2,6 @@ import numpy as np
 
 from modelos.ponto import Ponto
 
-# Classe da window, onde salvo seus dados
 class Window:       
     def __init__(self, xwmin: float, ywmin: float, xwmax: float, ywmax: float):
         self.ponto_min = Ponto(float(xwmin), float(ywmin))
@@ -21,7 +20,7 @@ class Window:
     def Vup(self):
         return [{'x': self.ponto_min.x,
                  'y': self.ponto_min.y},
-                {'x': self.ponto_max.x,
+                {'x': self.ponto_min.x,
                  'y': self.ponto_max.y}]
 
     def aplica_transformacoes(self, tag_transformacao):
@@ -29,7 +28,7 @@ class Window:
         Aplica as transformações na window e atualiza os pontos mínimos e máximos da PPC
         '''
         ZOOM_DEFAULT = 0.1
-        TRANSLACAO_DEFAULT = 10
+        TRANSLACAO_DEFAULT = 1
         ANGULO_DEFAULT = 0.1745     # 10° = 0.1745 rad
 
         if tag_transformacao == 'Ampliar':
@@ -51,8 +50,8 @@ class Window:
 
 
     def aplica_zoom(self, zoom):
-        self.ponto_max.x += self.ponto_max.x * zoom
-        self.ponto_max.y += self.ponto_max.y * zoom
+        self.ponto_max.x -= self.ponto_max.x * zoom
+        self.ponto_max.y -= self.ponto_max.y * zoom
 
     def aplica_translacao_x(self, translacao):
         self.ponto_min.x = self.ponto_min.x + translacao

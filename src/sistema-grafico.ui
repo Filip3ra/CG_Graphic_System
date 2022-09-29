@@ -744,7 +744,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <column>
      <property name="text">
-      <string notr="true">Objeto</string>
+      <string>Objeto</string>
      </property>
     </column>
     <column>

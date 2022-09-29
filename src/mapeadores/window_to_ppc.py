@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from copy import copy
+import copy
 from modelos.window import Window
 from transformacoes_geometricas import TransformacaoGeometrica
 
@@ -13,7 +13,7 @@ def window_to_PPC(window: Window):
     window_ppc.aplica_translacao_y(-y_centro)
 
     # 2 - Determina o ângulo de Vup com Y
-    Vup = window_ppc.Vup
+    Vup = window_ppc.Vup()
     print(f'Vup: {Vup}')
 
     angulo_para_rotacionar_mundo = 0

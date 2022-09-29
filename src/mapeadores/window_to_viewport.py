@@ -23,6 +23,9 @@ class TransformadaViewport:
         Yv_min = self.viewport.ponto_min.y
         Yv_max = self.viewport.ponto_max.y
 
+        print(Xw_min,Xw_max,Yw_min,Yw_max)
+        print(Xv_min,Xv_max,Yv_min,Yv_max)
+        print('---------------------')
         # As duas equações de transformação são:
         # Xvp = ( (Xw - Xw_min) / Xw_max - Xw_min ) * (Xvp_max - Xvp_min)
         x_vp = (window_ponto.x - Xw_min) / \

@@ -2,7 +2,7 @@ import math
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QGraphicsScene
 
-from graficos import atualiza_lista_objetos, exibe_na_viewport
+from graficos import atualiza_lista_objetos, exibe_na_viewport, realiza_transformacao_dados
 from mapeadores.window_to_ppc import window_to_PPC
 from mapeadores.window_to_viewport import TransformadaViewport
 from modelos.objeto_geometrico import ObjetoGeometrico
@@ -153,26 +153,19 @@ def atualiza_window(ui: QDialog,
                     dados_saida: list,
                     tag_transformacao: str):
     dados_entrada[0]['window'].aplica_transformacoes(tag_transformacao)
-    dados_entrada[0]['window'], transformacoes_aux = window_to_PPC(dados_entrada[0]['window'])
 
-    for index in range(len(dados_saida)):
-        try:
-            # Atualizo somente para ponto, reta e poligono, pois somente eles tem o método atualiza_valores_PPC
-            dados_saida[index].atualiza_valores_PPC(transformacoes_aux)   
-        except:
-            pass 
+    if tag_transformacao == 'Rotação':
+        dados_entrada[0]['window'], transformacoes_aux = window_to_PPC(dados_entrada[0]['window'])
 
-    # Window -> viewport
-    transformada = TransformadaViewport(dados_entrada[0]['window'],
-                                        dados_entrada[0]['viewport'])
-                                        
-    for index in range(len(dados_saida)):
-        if isinstance(dados_saida[index], Ponto):
-            dados_saida[index] = transformada.transformada_ponto(dados_saida[index])
-        elif isinstance(dados_saida[index], Reta):
-            dados_saida[index] = transformada.transformada_reta(dados_saida[index])
-        elif isinstance(dados_saida[index], Poligono):
-            dados_saida[index] = transformada.transformada_poligono(dados_saida[index])
+        for index in range(len(dados_saida)):
+            try:
+                # Atualizo somente para ponto, reta e poligono, pois somente eles tem o método atualiza_valores_PPC
+                dados_saida[index].atualiza_valores_PPC(transformacoes_aux)   
+            except:
+                pass 
+
+    realiza_transformacao_dados(dados_entrada_dict=dados_entrada[0],
+                                dados_saida=dados_saida)  
 
     atualiza_lista_objetos(ui= ui,
                            dados_saida= dados_saida)
