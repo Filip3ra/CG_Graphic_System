@@ -143,10 +143,6 @@ def verifica_transformacoes_objetos(ui: QDialog,
         ui.tableWidget.setColumnCount(0)
         ## TODO Colocar nomes nas colunas
 
-
-def adiciona_transformacao(ui: QDialog):
-    adiciona_lista_transformacoes(ui= ui)
-
 def atualiza_window(ui: QDialog,
                     scene: QGraphicsScene,
                     dados_entrada: list,
@@ -164,8 +160,12 @@ def atualiza_window(ui: QDialog,
             except:
                 pass 
 
-    realiza_transformacao_dados(dados_entrada_dict=dados_entrada[0],
-                                dados_saida=dados_saida)  
+    transformada = TransformadaViewport(dados_entrada[0]['window'],
+                                        dados_entrada[0]['viewport'])
+
+    for index in range(len(dados_saida)):
+        dados_saida[index].aplica_transformada(dados_entrada[0]['window'],
+                                               dados_entrada[0]['viewport'])
 
     atualiza_lista_objetos(ui= ui,
                            dados_saida= dados_saida)

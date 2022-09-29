@@ -12,5 +12,11 @@ class ObjetoGeometrico:
     def aplica_transformacoes(self):
         pass
 
-    def atualiza_valores_PPC():
+    def atualiza_valores_PPC(self):
+        pass
+
+    def aplica_transformada(self):
+        pass
+    
+    def reset(self):
         pass

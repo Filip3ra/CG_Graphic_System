@@ -1,3 +1,4 @@
+import math
 import numpy as np
 
 from modelos.ponto import Ponto
@@ -6,8 +7,6 @@ class Window:
     def __init__(self, xwmin: float, ywmin: float, xwmax: float, ywmax: float):
         self.ponto_min = Ponto(float(xwmin), float(ywmin))
         self.ponto_max = Ponto(float(xwmax), float(ywmax))
-        self.ponto_min_original = Ponto(float(xwmin), float(ywmin))
-        self.ponto_max_original = Ponto(float(xwmax), float(ywmax))
     
     def __str__(self) -> str:
         return f'Window: ({self.ponto_min.x}, {self.ponto_min.y}), ({self.ponto_max.x},{self.ponto_max.y})'
@@ -29,7 +28,8 @@ class Window:
         '''
         ZOOM_DEFAULT = 0.1
         TRANSLACAO_DEFAULT = 1
-        ANGULO_DEFAULT = 0.1745     # 10° = 0.1745 rad
+        ANGULO_DEFAULT = math.radians(10)     # 10° = 0.1745 rad
+        centro_x, centro_y = self.centro_objeto()
 
         if tag_transformacao == 'Ampliar':
             self.aplica_zoom(ZOOM_DEFAULT)
@@ -44,9 +44,17 @@ class Window:
         elif tag_transformacao == 'Direita':
             self.aplica_translacao_x(TRANSLACAO_DEFAULT)
         elif tag_transformacao == 'Girar Negativamente':
+            self.aplica_translacao_x(-centro_x)
+            self.aplica_translacao_y(-centro_y)
             self.aplica_rotacao(- ANGULO_DEFAULT)
+            self.aplica_translacao_x(centro_x)
+            self.aplica_translacao_y(centro_y)
         elif tag_transformacao == 'Girar Positivamente':
+            self.aplica_translacao_x(-centro_x)
+            self.aplica_translacao_y(-centro_y)
             self.aplica_rotacao(ANGULO_DEFAULT)
+            self.aplica_translacao_x(centro_x)
+            self.aplica_translacao_y(centro_y)
 
 
     def aplica_zoom(self, zoom):
@@ -68,3 +76,6 @@ class Window:
         self.ponto_max.x = self.ponto_max.x * np.cos(angulo_rad) - self.ponto_min.y * np.sin(angulo_rad)
         self.ponto_max.y = self.ponto_max.x * np.sin(angulo_rad) + self.ponto_min.y * np.cos(angulo_rad)
 
+    def reset(self):
+        self.ponto_min.reset()
+        self.ponto_max.reset()

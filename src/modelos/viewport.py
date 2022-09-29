@@ -25,3 +25,7 @@ class Viewport:
         centro_y = (self.ponto_min.y + self.ponto_max.y)/2
         return centro_x, centro_y
 
+    def reset(self):
+        self.ponto_min.reset()
+        self.ponto_max.reset()
+

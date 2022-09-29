@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 from escritor_xml import gera_arquivo_saida
 
-from graficos import browseFiles, att_opcao_selecionada, adiciona_objeto
+from graficos import browseFiles, att_opcao_selecionada, adiciona_objeto, reset_window
 from transformacoes import adiciona_lista_transformacoes, atualiza_window, verifica_transformacoes_objetos
 from transformacoes_geometricas import TransformacaoGeometrica
 
@@ -69,6 +69,12 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
                                                             dados_saida= dados_saida,
                                                             tag_transformacao = 'Direita'))
     
+    ui.button_reset.clicked.connect(lambda: reset_window(ui = ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida))
+
+
     ui.button_add_controle.clicked.connect(lambda: adiciona_lista_transformacoes(ui= ui))
 
     # Ao clicar em Aplicar, chama a função verifica_transformacoes

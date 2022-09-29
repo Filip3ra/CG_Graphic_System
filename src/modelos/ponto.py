@@ -38,13 +38,40 @@ class Ponto(ObjetoGeometrico):
         return Ponto(dic['x'], dic['y'])
 
     def aplica_transformacoes(self, transformacoes: TransformacaoGeometrica):
+        print(f'Apl. transf. -> X: {self.x} - X_ORI: {self.x_original}')
         self.matriz = np.dot(transformacoes.matriz, self.matriz)
         self.x = self.matriz[0]
         self.y = self.matriz[1]
 
-    def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica):        
+    def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica):
+        print(f'At. val. ppc -> X: {self.x} - X_ORI: {self.x_original}')        
         self.matriz = np.dot(transformacao.matriz, self.matriz)
         self.x = self.matriz[0]
         self.y = self.matriz[1]
     
+    def aplica_transformada(self, window, viewport):
+        # Window
+        Xw_min = window.ponto_min.x
+        Xw_max = window.ponto_max.x
+        Yw_min = window.ponto_min.y
+        Yw_max = window.ponto_max.y
+        # Viewport
+        Xv_min = viewport.ponto_min.x
+        Xv_max = viewport.ponto_max.y
+        Yv_min = viewport.ponto_min.y
+        Yv_max = viewport.ponto_max.y
+
+        # As duas equações de transformação são:
+        # Xvp = ( (Xw - Xw_min) / Xw_max - Xw_min ) * (Xvp_max - Xvp_min)
+        self.x = (self.x - Xw_min) / \
+            (Xw_max - Xw_min) * (Xv_max - Xv_min)
+
+        # Yvp = (1 - (Yw - Yw_min) / (Yw_max - Yw_min)) * (Yvp_max - Yvp_min)
+        self.y = (1 - ((self.y - Yw_min) /
+                (Yw_max - Yw_min))) * (Yv_max - Yv_min)
+
+    def reset(self):
+        self.x = self.x_original
+        self.y = self.y_original
+        self.matriz = self.matriz_original
 

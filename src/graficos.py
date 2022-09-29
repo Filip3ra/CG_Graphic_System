@@ -206,3 +206,24 @@ def att_opcao_selecionada(ui: QDialog):
         ui.text_y_3.setDisabled(False)
         ui.button_add_ponto.setDisabled(False)
 
+def reset_window(ui: QDialog,
+                 scene: QGraphicsScene,
+                 dados_entrada: list,
+                 dados_saida: list):
+    '''
+    Reverte todas as transformações realizadas nos objetos, window e viewport, 
+    voltando tudo as configurações originais do arquivo XML.
+    '''
+    dados_entrada[0]['window'].reset()
+    dados_entrada[0]['viewport'].reset()
+
+    for index in range(len(dados_saida)):
+        dados_saida[index].reset()
+
+    atualiza_lista_objetos(ui= ui,
+                           dados_saida= dados_saida)
+
+    exibe_na_viewport(ui= ui,
+                      scene= scene,
+                      dados_entrada=dados_entrada,
+                      dados_saida= dados_saida)

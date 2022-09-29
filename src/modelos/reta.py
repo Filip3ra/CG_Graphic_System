@@ -17,8 +17,6 @@ class Reta(ObjetoGeometrico):
         else:
             self.p1 = p1
             self.p2 = p2
-            self.p1_original = p1
-            self.p2_original = p2
 
     def __str__(self) -> str:
         return f'Reta: {self.p1} {self.p2}'
@@ -35,3 +33,11 @@ class Reta(ObjetoGeometrico):
     def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica):
         self.p1.atualiza_valores_PPC(transformacao)
         self.p1.atualiza_valores_PPC(transformacao)
+
+    def aplica_transformada(self, window, viewport):
+        self.p1.aplica_transformada(window, viewport)
+        self.p2.aplica_transformada(window, viewport)
+
+    def reset(self):
+        self.p1.reset()
+        self.p2.reset()

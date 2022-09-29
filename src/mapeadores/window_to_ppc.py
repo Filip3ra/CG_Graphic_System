@@ -12,24 +12,13 @@ def window_to_PPC(window: Window):
     window_ppc.aplica_translacao_x(-x_centro)
     window_ppc.aplica_translacao_y(-y_centro)
 
-    # 2 - Determina o ângulo de Vup com Y
-    Vup = window_ppc.Vup()
-    print(f'Vup: {Vup}')
+    ANGULO_DEFAULT = 10
+    ## Rotaciona no sentido inverso
+    angulo_para_rotacionar_mundo = - math.radians(ANGULO_DEFAULT)
 
-    angulo_para_rotacionar_mundo = 0
-    if Vup[1]['x'] != Vup[0]['x']:     # Se for igual, Vup paralelo com Y
-        m_Vup = (Vup[1]['y'] - Vup[0]['y']) / (Vup[1]['x'] - Vup[0]['x'])
-        
-        # 3 - Rotaciona para Vup ser paralelo com eixo Y
-        # Alinha Vup com Y em radianos
-        angulo_para_rotacionar_mundo = - math.radians(np.arctan(np.abs(1/m_Vup)))
+    window_ppc.aplica_rotacao(angulo_para_rotacionar_mundo)
 
-        print(f'Angulo: {angulo_para_rotacionar_mundo:.2f}')
-        window_ppc.aplica_rotacao(angulo_para_rotacionar_mundo)
-
-    # 4 Aplica transformações na window e demais objetos
     transformacoes_aux = TransformacaoGeometrica()
-    window_ppc.ponto_min.atualiza_valores_PPC(transformacoes_aux)
-    window_ppc.ponto_max.atualiza_valores_PPC(transformacoes_aux)
-
+    transformacoes_aux.translacao(-x_centro, -y_centro)
+    transformacoes_aux.rotacao(angulo_para_rotacionar_mundo)
     return window_ppc, transformacoes_aux
