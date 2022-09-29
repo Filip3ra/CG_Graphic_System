@@ -8,7 +8,7 @@ from leitor_xml import LeitorEntradaXml
 from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.poligono import Poligono
-from transformada_viewport import TransformadaViewport
+from mapeadores.window_to_viewport import TransformadaViewport
 
 def realiza_transformacao_dados(dados_entrada_dict: dict,
                                 dados_saida: list):

@@ -42,7 +42,7 @@ class Ponto(ObjetoGeometrico):
         self.x = self.matriz[0]
         self.y = self.matriz[1]
 
-    def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica, angulo):        
+    def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica):        
         self.matriz = np.dot(transformacao.matriz, self.matriz)
         self.x = self.matriz[0]
         self.y = self.matriz[1]

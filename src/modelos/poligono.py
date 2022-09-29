@@ -40,6 +40,6 @@ class Poligono(ObjetoGeometrico):
         for index in range(len(self.lista_pontos)):
             self.lista_pontos[index].aplica_transformacoes(transformacoes)
 
-    def atualiza_valores_PPC(self, transformacao, angulo):
+    def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica):
         for index in range(len(self.lista_pontos)):
-            self.lista_pontos[index].atualiza_valores_PPC(transformacao, angulo)
+            self.lista_pontos[index].atualiza_valores_PPC(transformacao)

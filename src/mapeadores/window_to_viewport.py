@@ -2,24 +2,26 @@
 from modelos.reta import Reta
 from modelos.ponto import Ponto
 from modelos.poligono import Poligono
+from modelos.viewport import Viewport
+from modelos.window import Window
 
 
 class TransformadaViewport:
-    def __init__(self, window_param, viewport_param):
+    def __init__(self, window_param: Window, viewport_param: Viewport):
         self.window = window_param
         self.viewport = viewport_param
 
-    def transformada_ponto(self, window_ponto):
+    def transformada_ponto(self, window_ponto: Ponto):
         # Window
-        Xw_min = self.window.xwmin
-        Xw_max = self.window.xwmax
-        Yw_min = self.window.ywmin
-        Yw_max = self.window.ywmax
+        Xw_min = self.window.ponto_min.x
+        Xw_max = self.window.ponto_max.x
+        Yw_min = self.window.ponto_min.y
+        Yw_max = self.window.ponto_max.y
         # Viewport
-        Xv_min = self.viewport.xvmin
-        Xv_max = self.viewport.xvmax
-        Yv_min = self.viewport.yvmin
-        Yv_max = self.viewport.yvmax
+        Xv_min = self.viewport.ponto_min.x
+        Xv_max = self.viewport.ponto_max.y
+        Yv_min = self.viewport.ponto_min.y
+        Yv_max = self.viewport.ponto_max.y
 
         # As duas equações de transformação são:
         # Xvp = ( (Xw - Xw_min) / Xw_max - Xw_min ) * (Xvp_max - Xvp_min)

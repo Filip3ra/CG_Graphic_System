@@ -32,6 +32,6 @@ class Reta(ObjetoGeometrico):
         self.p1.aplica_transformacoes(transformacoes)
         self.p2.aplica_transformacoes(transformacoes)
 
-    def atualiza_valores_PPC(self, transformacao, angulo):
-        self.p1.atualiza_valores_PPC(transformacao, angulo)
-        self.p1.atualiza_valores_PPC(transformacao, angulo)
+    def atualiza_valores_PPC(self, transformacao: TransformacaoGeometrica):
+        self.p1.atualiza_valores_PPC(transformacao)
+        self.p1.atualiza_valores_PPC(transformacao)

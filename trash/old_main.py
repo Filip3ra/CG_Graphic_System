@@ -1,6 +1,6 @@
 import sys
 from leitor_xml import LeitorEntradaXml
-from transformada_viewport import Transformacao
+from mapeadores.window_to_viewport import Transformacao
 from escritor_xml import gera_arquivo_saida
 from trash.janela import teste, renderiza_objetos
 
