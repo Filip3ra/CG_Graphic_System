@@ -9,6 +9,8 @@ from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.poligono import Poligono
 from mapeadores.window_to_viewport import TransformadaViewport
+from modelos.viewport import Viewport
+from modelos.window import Window
 
 def realiza_transformacao_dados(dados_entrada_dict: dict,
                                 dados_saida: list):
@@ -144,13 +146,45 @@ def exibe_na_viewport(ui: QDialog,
 
 # link referencia --> https://pythonpyqt.com/pyqt-label/
 # TODO como configurar 'self' nessa função? igual o exemplo do link...
-def adiciona_objeto():
-    label_x1 = QLabel('&label_ponto_1_x')
-    x1_LineEdit = QLineEdit()
-    label_x1.setBuddy(x1_LineEdit)
+def adiciona_objeto(ui: QDialog,
+                    scene: QGraphicsScene,
+                    dados_entrada: list,
+                    dados_saida: list):
+    if ui.radioButton_ponto.isChecked():
+        try:
+            valor_x = int(ui.text_x_1.toPlainText())
+            valor_y = int(ui.text_y_1.toPlainText())
+        except:
+            print('Digite os valores do ponto para o ponto!')
+        ponto_aux = Ponto(valor_x, valor_y)
+        ponto_aux.aplica_transformada(window= dados_entrada[0]['window'],
+                                      viewport= dados_entrada[0]['viewport'])
+        dados_saida.append(ponto_aux)
+        del ponto_aux
+    elif ui.radioButton_reta.isChecked():
+        try:
+            valor_x_1 = int(ui.text_x_1.toPlainText())
+            valor_y_1 = int(ui.text_y_1.toPlainText())
+            valor_x_2 = int(ui.text_x_2.toPlainText())
+            valor_y_2 = int(ui.text_y_2.toPlainText())
+        except:
+            print('Digite os valores dos 2 pontos para a reta!')
 
-    print(x1_LineEdit)
+        ponto_aux_1 = Ponto(valor_x_1, valor_y_1)
+        ponto_aux_2 = Ponto(valor_x_2, valor_y_2)
+        reta_aux = Reta(ponto_aux_1, ponto_aux_2)
+        reta_aux.aplica_transformada(window= dados_entrada[0]['window'],
+                                      viewport= dados_entrada[0]['viewport'])
+        dados_saida.append(reta_aux)
+        del reta_aux
 
+    atualiza_lista_objetos(ui= ui,
+                           dados_saida= dados_saida)
+
+    exibe_na_viewport(ui= ui,
+                      scene= scene,
+                      dados_entrada=dados_entrada,
+                      dados_saida= dados_saida)
 
 def att_opcao_selecionada(ui: QDialog):
     # Verifica o tipo do objeto

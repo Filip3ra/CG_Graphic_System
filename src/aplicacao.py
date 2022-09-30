@@ -24,7 +24,10 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
 
     # Ao pressionar o botão de adicionar um objeto, chama a função
     ui.button_atualizar.pressed.connect(lambda: att_opcao_selecionada(ui= ui))
-    ui.button_adicionar.pressed.connect(lambda: adiciona_objeto())
+    ui.button_adicionar.pressed.connect(lambda: adiciona_objeto(ui= ui,
+                                                            scene = scene,
+                                                            dados_entrada= dados_entrada,
+                                                            dados_saida= dados_saida,))
 
     # Ao clicar nos butões das transformações geométricas
     # é chamada a função específica para aquele butão
