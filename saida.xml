@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version='1.0' encoding='utf-8'?>
 <root>
   <pontos>
@@ -24,3 +25,7 @@
     </poligonos>
   </poligonos>
 </root>
+=======
+<?xml version='1.0' encoding='utf-8'?>
+<root><pontos><ponto x="0.0" y="368.0" /><ponto x="124.0" y="276.0" /><ponto x="248.0" y="184.0" /></pontos></root>
+>>>>>>> 93abfa82f34960354312a86c5fb84deeb022d439
