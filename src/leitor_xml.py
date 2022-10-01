@@ -78,8 +78,8 @@ class LeitorEntradaXml:
 
 # ----- PONTOS, LINHAS E POLIGONOS ----- #
 
-    def getPonto(self, ponto):
-        param = ponto.attrib
+    def getPonto(self, pontoo):
+        param = pontoo.attrib
         return Ponto.cria_atributos_dicionario_do_xml_int(param)
 
     def getReta(self, reta):
