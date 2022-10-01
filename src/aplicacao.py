@@ -83,8 +83,7 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
                                                          dados_entrada=dados_entrada,
                                                          dados_saida=dados_saida))
 
-    ui.button_add_controle.clicked.connect(
-        lambda: adiciona_lista_transformacoes(ui=ui))
+    ui.button_add_controle.clicked.connect(lambda: adiciona_lista_transformacoes(ui=ui))
 
     # Ao clicar em Aplicar, chama a função verifica_transformacoes
     ui.button_aplicar.clicked.connect(lambda: verifica_transformacoes_objetos(ui=ui,
@@ -93,8 +92,7 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
                                                                               dados_saida=dados_saida))
 
     # Ao pressionar o botão será gerado o arquivo de saída
-    ui.button_exportar.pressed.connect(
-        lambda: exporta_arquivo_xml(dados_saida))
+    ui.button_exportar.pressed.connect(lambda: exporta_arquivo_xml(dados_saida))
 
     # Fechando janela
     ui.button_close.clicked.connect(QtCore.QCoreApplication.instance().quit)

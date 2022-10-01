@@ -286,19 +286,22 @@ def reset_window(ui: QDialog,
     Reverte todas as transformações realizadas nos objetos, window e viewport, 
     voltando tudo as configurações originais do arquivo XML.
     '''
-    dados_entrada[0]['window'].reset()
-    dados_entrada[0]['viewport'].reset()
+    try:
+        dados_entrada[0]['window'].reset()
+        dados_entrada[0]['viewport'].reset()
 
-    for index in range(len(dados_saida)):
-        dados_saida[index].reset()
+        for index in range(len(dados_saida)):
+            dados_saida[index].reset()
 
-    atualiza_lista_objetos(ui=ui,
-                           dados_saida=dados_saida)
+        atualiza_lista_objetos(ui=ui,
+                            dados_saida=dados_saida)
 
-    exibe_na_viewport(ui=ui,
-                      scene=scene,
-                      dados_entrada=dados_entrada,
-                      dados_saida=dados_saida)
+        exibe_na_viewport(ui=ui,
+                        scene=scene,
+                        dados_entrada=dados_entrada,
+                        dados_saida=dados_saida)
+    except:
+        print('Insira um arquivo de entrada XML!')
 
 def adiciona_lista_transformacoes(ui: QDialog):
     '''
