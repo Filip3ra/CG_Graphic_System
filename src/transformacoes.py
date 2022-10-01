@@ -2,7 +2,7 @@ import math
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QGraphicsScene
 
-from graficos import atualiza_lista_objetos, exibe_na_viewport, realiza_transformacao_dados
+from graficos import adiciona_lista_transformacoes, atualiza_lista_objetos, exibe_na_viewport, realiza_transformacao_dados
 from mapeadores.window_to_ppc import window_to_PPC
 from mapeadores.window_to_viewport import TransformadaViewport
 from modelos.objeto_geometrico import ObjetoGeometrico
@@ -11,29 +11,6 @@ from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.window import Window
 from transformacoes_geometricas import TransformacaoGeometrica
-
-
-def adiciona_lista_transformacoes(ui: QDialog):
-    '''
-    Adiciona a descrição das transformações na lista de transformações dos objetos.
-    '''
-    valor_x = ui.text_controle_x.toPlainText()
-    valor_y = ui.text_controle_y.toPlainText()
-
-    if ui.radioButton_translacao.isChecked():
-        operacao = 'Translação'
-    if ui.radioButton_rotacao.isChecked():
-        operacao = 'Rotação'
-    if ui.radioButton_escala.isChecked():
-        operacao = 'Escala'
-
-    num_linhas = ui.tableWidget.rowCount()
-    ui.tableWidget.setRowCount(num_linhas+1)
-    ui.tableWidget.setColumnCount(3)
-
-    ui.tableWidget.setItem(num_linhas, 0, QtWidgets.QTableWidgetItem(operacao))
-    ui.tableWidget.setItem(num_linhas, 1, QtWidgets.QTableWidgetItem(valor_x))
-    ui.tableWidget.setItem(num_linhas, 2, QtWidgets.QTableWidgetItem(valor_y))
             
 def aplica_transformacoes_objetos(objeto_geometrico: ObjetoGeometrico, 
                                   transformacoes: TransformacaoGeometrica):
@@ -160,7 +137,7 @@ def atualiza_window(ui: QDialog,
                     dados_saida[index].atualiza_valores_PPC(transformacoes_aux)   
                 except:
                     pass 
-
+                
         transformada = TransformadaViewport(dados_entrada[0]['window'],
                                             dados_entrada[0]['viewport'])
 

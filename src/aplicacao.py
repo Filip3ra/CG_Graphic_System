@@ -1,10 +1,8 @@
 from PyQt5 import QtCore, QtWidgets
 from escritor_xml import gera_arquivo_saida
 
-from graficos import browseFiles, att_opcao_selecionada, adiciona_objeto, reset_window
+from graficos import adiciona_objeto_na_tabela, browseFiles, adiciona_objeto, reset_window
 from transformacoes import adiciona_lista_transformacoes, atualiza_window, verifica_transformacoes_objetos
-from transformacoes_geometricas import TransformacaoGeometrica
-
 
 def exporta_arquivo_xml(dados_saida: list):
     '''
@@ -28,14 +26,14 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
                                                        dados_entrada=dados_entrada,
                                                        dados_saida=dados_saida,
                                                        dados_saida_xml=dados_saida_xml,
-                                                       scene=scene))
-
+                                                       scene=scene)) 
     # Ao pressionar o botão de adicionar um objeto, chama a função
-    ui.button_atualizar.pressed.connect(lambda: att_opcao_selecionada(ui=ui))
+    #ui.button_atualizar.pressed.connect(lambda: att_opcao_selecionada(ui=ui))
     ui.button_adicionar.pressed.connect(lambda: adiciona_objeto(ui=ui,
                                                                 scene=scene,
                                                                 dados_entrada=dados_entrada,
-                                                                dados_saida=dados_saida,))
+                                                                dados_saida=dados_saida))                                                                
+    ui.button_add_objetos.clicked.connect(lambda: adiciona_objeto_na_tabela(ui=ui))
 
     # Ao clicar nos butões das transformações geométricas
     # é chamada a função específica para aquele butão
