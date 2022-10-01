@@ -9,31 +9,41 @@ from modelos.ponto import Ponto
 from modelos.reta import Reta
 from modelos.poligono import Poligono
 from mapeadores.window_to_viewport import TransformadaViewport
+from escritor_xml import gera_arquivo_saida, guarda_arquivo_saida
 from modelos.viewport import Viewport
 from modelos.window import Window
 
+
 def realiza_transformacao_dados(dados_entrada_dict: dict,
-                                dados_saida: list):
+                                dados_saida: list,
+                                dados_saida_xml):
     '''
     Realiza a transformação em cima dos dados de entrada lidos.
     '''
 
     dados_saida.clear()
-    
+
     transformacao = TransformadaViewport(
         dados_entrada_dict['window'], dados_entrada_dict['viewport'])
 
     for w_ponto in dados_entrada_dict['pontos']:
         v_ponto = transformacao.transformada_ponto(w_ponto)
+        dados_saida_xml['pontos'].append(v_ponto)
         dados_saida.append(v_ponto)
 
     for w_reta in dados_entrada_dict['retas']:
         v_reta = transformacao.transformada_reta(w_reta)
+        dados_saida_xml['retas'].append(v_reta)
         dados_saida.append(v_reta)
 
     for w_poligono in dados_entrada_dict['poligonos']:
         v_poligono = transformacao.transformada_poligono(w_poligono)
+        dados_saida_xml['poligonos'].append(v_poligono)
         dados_saida.append(v_poligono)
+
+    gera_arquivo_saida(dados_saida_xml,'saida.xml')
+
+    #guarda_arquivo_saida(dados_saida_xml)
 
 
 def atualiza_lista_objetos(ui: QDialog,
@@ -49,6 +59,7 @@ def atualiza_lista_objetos(ui: QDialog,
 def browseFiles(ui: QDialog,
                 dados_entrada: list,
                 dados_saida: list,
+                dados_saida_xml,
                 scene: QGraphicsScene):
     '''
     Função que carrega o arquivo xml e já realiza a transformação dos pontos do objeto geométrico.
@@ -67,22 +78,23 @@ def browseFiles(ui: QDialog,
 
         # Configurando a cena com o tamanho da viewport passada
         scene.setSceneRect(
-            0, 0, 
-            dados_entrada_dict["viewport"].ponto_max.x, 
+            0, 0,
+            dados_entrada_dict["viewport"].ponto_max.x,
             dados_entrada_dict["viewport"].ponto_max.y
         )
 
-        realiza_transformacao_dados(dados_entrada_dict= dados_entrada_dict, 
-                                    dados_saida= dados_saida)
+        realiza_transformacao_dados(dados_entrada_dict=dados_entrada_dict,
+                                    dados_saida=dados_saida,
+                                    dados_saida_xml=dados_saida_xml)
 
         # Adiciona cada objeto na lista
-        atualiza_lista_objetos(ui = ui, 
-                            dados_saida=dados_saida)
+        atualiza_lista_objetos(ui=ui,
+                               dados_saida=dados_saida)
 
-        exibe_na_viewport(ui= ui,
-                        scene=scene,
-                        dados_entrada=dados_entrada,
-                        dados_saida=dados_saida)
+        exibe_na_viewport(ui=ui,
+                          scene=scene,
+                          dados_entrada=dados_entrada,
+                          dados_saida=dados_saida)
     except:
         pass
 
@@ -106,7 +118,7 @@ def exibe_na_viewport(ui: QDialog,
     ''' 
     Verifica quais itens estão selecionados, os que estiverem selecionados serão exibidos na viewport.
     '''
-    atualiza_objeto(ui= ui)
+    atualiza_objeto(ui=ui)
 
     # Dicionário de cores para os objetos geométricos
     dict_colors = mcolors.TABLEAU_COLORS
@@ -116,7 +128,7 @@ def exibe_na_viewport(ui: QDialog,
     scene.clear()
 
     # Adicionando retângulo conforme o viewport passado
-    scene.addRect(0, 0, 
+    scene.addRect(0, 0,
                   dados_entrada[0]["viewport"].ponto_max.x,
                   dados_entrada[0]["viewport"].ponto_max.y,
                   QPen(QColor("black")))
@@ -157,8 +169,8 @@ def adiciona_objeto(ui: QDialog,
         except:
             print('Digite os valores do ponto para o ponto!')
         ponto_aux = Ponto(valor_x, valor_y)
-        ponto_aux.aplica_transformada(window= dados_entrada[0]['window'],
-                                      viewport= dados_entrada[0]['viewport'])
+        ponto_aux.aplica_transformada(window=dados_entrada[0]['window'],
+                                      viewport=dados_entrada[0]['viewport'])
         dados_saida.append(ponto_aux)
         del ponto_aux
     elif ui.radioButton_reta.isChecked():
@@ -173,18 +185,19 @@ def adiciona_objeto(ui: QDialog,
         ponto_aux_1 = Ponto(valor_x_1, valor_y_1)
         ponto_aux_2 = Ponto(valor_x_2, valor_y_2)
         reta_aux = Reta(ponto_aux_1, ponto_aux_2)
-        reta_aux.aplica_transformada(window= dados_entrada[0]['window'],
-                                      viewport= dados_entrada[0]['viewport'])
+        reta_aux.aplica_transformada(window=dados_entrada[0]['window'],
+                                     viewport=dados_entrada[0]['viewport'])
         dados_saida.append(reta_aux)
         del reta_aux
 
-    atualiza_lista_objetos(ui= ui,
-                           dados_saida= dados_saida)
+    atualiza_lista_objetos(ui=ui,
+                           dados_saida=dados_saida)
 
-    exibe_na_viewport(ui= ui,
-                      scene= scene,
+    exibe_na_viewport(ui=ui,
+                      scene=scene,
                       dados_entrada=dados_entrada,
-                      dados_saida= dados_saida)
+                      dados_saida=dados_saida)
+
 
 def att_opcao_selecionada(ui: QDialog):
     # Verifica o tipo do objeto
@@ -240,6 +253,7 @@ def att_opcao_selecionada(ui: QDialog):
         ui.text_y_3.setDisabled(False)
         ui.button_add_ponto.setDisabled(False)
 
+
 def reset_window(ui: QDialog,
                  scene: QGraphicsScene,
                  dados_entrada: list,
@@ -254,10 +268,10 @@ def reset_window(ui: QDialog,
     for index in range(len(dados_saida)):
         dados_saida[index].reset()
 
-    atualiza_lista_objetos(ui= ui,
-                           dados_saida= dados_saida)
+    atualiza_lista_objetos(ui=ui,
+                           dados_saida=dados_saida)
 
-    exibe_na_viewport(ui= ui,
-                      scene= scene,
+    exibe_na_viewport(ui=ui,
+                      scene=scene,
                       dados_entrada=dados_entrada,
-                      dados_saida= dados_saida)
+                      dados_saida=dados_saida)
