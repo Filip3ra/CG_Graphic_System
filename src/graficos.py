@@ -1,6 +1,8 @@
+from this import d
 from PyQt5.QtCore import QPointF
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QPolygonF, QPen, QColor, QBrush
-from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene, QLineEdit, QLabel
+from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QGraphicsScene
 import matplotlib.colors as mcolors
 from PyQt5 import QtCore
 
@@ -10,8 +12,6 @@ from modelos.reta import Reta
 from modelos.poligono import Poligono
 from mapeadores.window_to_viewport import TransformadaViewport
 from escritor_xml import gera_arquivo_saida, guarda_arquivo_saida
-from modelos.viewport import Viewport
-from modelos.window import Window
 
 
 def realiza_transformacao_dados(dados_entrada_dict: dict,
@@ -156,39 +156,61 @@ def exibe_na_viewport(ui: QDialog,
         ui.graphics_view_viewport.setScene(scene)
 
 
-# link referencia --> https://pythonpyqt.com/pyqt-label/
-# TODO como configurar 'self' nessa função? igual o exemplo do link...
 def adiciona_objeto(ui: QDialog,
                     scene: QGraphicsScene,
                     dados_entrada: list,
                     dados_saida: list):
     if ui.radioButton_ponto.isChecked():
-        try:
-            valor_x = int(ui.text_x_1.toPlainText())
-            valor_y = int(ui.text_y_1.toPlainText())
-        except:
-            print('Digite os valores do ponto para o ponto!')
-        ponto_aux = Ponto(valor_x, valor_y)
-        ponto_aux.aplica_transformada(window=dados_entrada[0]['window'],
-                                      viewport=dados_entrada[0]['viewport'])
-        dados_saida.append(ponto_aux)
-        del ponto_aux
+        num_linhas = ui.tableWidget_objetos.rowCount()
+        for linha in range(num_linhas):
+            try:   
+                valor_x = int(ui.tableWidget_objetos.item(linha, 0).text())
+                valor_y = int(ui.tableWidget_objetos.item(linha, 1).text())
+    
+                ponto_aux = Ponto(valor_x, valor_y)
+                ponto_aux.aplica_transformada(window=dados_entrada[0]['window'],
+                                            viewport=dados_entrada[0]['viewport'])
+                dados_saida.append(ponto_aux)
+                del ponto_aux
+            except:
+                print('Digite os valores do ponto para o ponto!')
     elif ui.radioButton_reta.isChecked():
-        try:
-            valor_x_1 = int(ui.text_x_1.toPlainText())
-            valor_y_1 = int(ui.text_y_1.toPlainText())
-            valor_x_2 = int(ui.text_x_2.toPlainText())
-            valor_y_2 = int(ui.text_y_2.toPlainText())
-        except:
-            print('Digite os valores dos 2 pontos para a reta!')
+        try:    
+            valor_x_1 = int(ui.tableWidget_objetos.item(0, 0).text())
+            valor_y_1 = int(ui.tableWidget_objetos.item(0, 1).text())
+            valor_x_2 = int(ui.tableWidget_objetos.item(1, 0).text())
+            valor_y_2 = int(ui.tableWidget_objetos.item(1, 1).text())
 
-        ponto_aux_1 = Ponto(valor_x_1, valor_y_1)
-        ponto_aux_2 = Ponto(valor_x_2, valor_y_2)
-        reta_aux = Reta(ponto_aux_1, ponto_aux_2)
-        reta_aux.aplica_transformada(window=dados_entrada[0]['window'],
-                                     viewport=dados_entrada[0]['viewport'])
-        dados_saida.append(reta_aux)
-        del reta_aux
+            ponto_aux_1 = Ponto(valor_x_1, valor_y_1)
+            ponto_aux_2 = Ponto(valor_x_2, valor_y_2)
+            reta_aux = Reta(ponto_aux_1, ponto_aux_2)
+            reta_aux.aplica_transformada(window=dados_entrada[0]['window'],
+                                        viewport=dados_entrada[0]['viewport'])
+            dados_saida.append(reta_aux)
+            del reta_aux
+        except:
+            print('Digite os valores do ponto para a reta!')
+    elif ui.radioButton_poligono.isChecked():
+        lista_pontos = []
+        num_linhas = ui.tableWidget_objetos.rowCount()
+        if num_linhas >= 3:
+            for linha in range(num_linhas):
+                try:   
+                    valor_x = int(ui.tableWidget_objetos.item(linha, 0).text())
+                    valor_y = int(ui.tableWidget_objetos.item(linha, 1).text())
+        
+                    ponto_aux = Ponto(valor_x, valor_y)
+                    
+                    ponto_aux.aplica_transformada(window=dados_entrada[0]['window'],
+                                                  viewport=dados_entrada[0]['viewport'])
+                    lista_pontos.append(ponto_aux)
+                    poligono_aux = Poligono(lista_pontos)
+                    dados_saida.append(poligono_aux)
+                    del ponto_aux
+                except:
+                    print('Digite os valores do ponto para o poligono!')
+        else:
+            print('Para formar um polígono é preciso pelo menos 3 pontos!')
 
     atualiza_lista_objetos(ui=ui,
                            dados_saida=dados_saida)
@@ -197,7 +219,9 @@ def adiciona_objeto(ui: QDialog,
                       scene=scene,
                       dados_entrada=dados_entrada,
                       dados_saida=dados_saida)
-
+    ui.tableWidget_objetos.setRowCount(0)
+    ui.tableWidget_objetos.setColumnCount(2)
+    return dados_saida
 
 def att_opcao_selecionada(ui: QDialog):
     # Verifica o tipo do objeto
@@ -275,3 +299,38 @@ def reset_window(ui: QDialog,
                       scene=scene,
                       dados_entrada=dados_entrada,
                       dados_saida=dados_saida)
+
+def adiciona_lista_transformacoes(ui: QDialog):
+    '''
+    Adiciona a descrição das transformações na lista de transformações dos objetos.
+    '''
+    valor_x = ui.text_controle_x.toPlainText()
+    valor_y = ui.text_controle_y.toPlainText()
+
+    if ui.radioButton_translacao.isChecked():
+        operacao = 'Translação'
+    if ui.radioButton_rotacao.isChecked():
+        operacao = 'Rotação'
+    if ui.radioButton_escala.isChecked():
+        operacao = 'Escala'
+
+    num_linhas = ui.tableWidget.rowCount()
+    ui.tableWidget.setRowCount(num_linhas+1)
+    ui.tableWidget.setColumnCount(3)
+
+    ui.tableWidget.setItem(num_linhas, 0, QtWidgets.QTableWidgetItem(operacao))
+    ui.tableWidget.setItem(num_linhas, 1, QtWidgets.QTableWidgetItem(valor_x))
+    ui.tableWidget.setItem(num_linhas, 2, QtWidgets.QTableWidgetItem(valor_y))
+
+def adiciona_objeto_na_tabela(ui: QDialog):
+    valor_x = ui.text_x.toPlainText()
+    valor_y = ui.text_y.toPlainText()
+
+    num_linhas = ui.tableWidget_objetos.rowCount()
+    ui.tableWidget_objetos.setRowCount(num_linhas+1)
+    ui.tableWidget_objetos.setColumnCount(2)
+
+    ui.tableWidget_objetos.setItem(num_linhas, 0, QtWidgets.QTableWidgetItem(valor_x))
+    ui.tableWidget_objetos.setItem(num_linhas, 1, QtWidgets.QTableWidgetItem(valor_y))
+    ui.text_x.clear()
+    ui.text_y.clear()
