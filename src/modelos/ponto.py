@@ -57,7 +57,7 @@ class Ponto(ObjetoGeometrico):
         Yw_max = window.ponto_max.y
         # Viewport
         Xv_min = viewport.ponto_min.x
-        Xv_max = viewport.ponto_max.y
+        Xv_max = viewport.ponto_max.x
         Yv_min = viewport.ponto_min.y
         Yv_max = viewport.ponto_max.y
 

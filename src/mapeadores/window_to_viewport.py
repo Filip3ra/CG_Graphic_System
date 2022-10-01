@@ -11,6 +11,12 @@ class TransformadaViewport:
         self.window = window_param
         self.viewport = viewport_param
 
+    def window_to_viewport_x(self, x_value):
+        return (x_value / (self.viewport.ponto_max.x - self.viewport.ponto_min.x) * (self.window.ponto_max.x - self.window.ponto_min.x)) + self.window.ponto_min.x
+
+    def window_to_viewport_y(self, y_value):
+        return ((((y_value / (self.viewport.ponto_max.y - self.viewport.ponto_min.y)) - 1) * (self.window.ponto_max.y - self.window.ponto_min.y)) - self.window.ponto_min.y) * (- 1)
+
     def transformada_ponto(self, window_ponto: Ponto):
         # Window
         Xw_min = self.window.ponto_min.x
@@ -19,7 +25,7 @@ class TransformadaViewport:
         Yw_max = self.window.ponto_max.y
         # Viewport
         Xv_min = self.viewport.ponto_min.x
-        Xv_max = self.viewport.ponto_max.y
+        Xv_max = self.viewport.ponto_max.x
         Yv_min = self.viewport.ponto_min.y
         Yv_max = self.viewport.ponto_max.y
 

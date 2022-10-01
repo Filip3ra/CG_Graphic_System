@@ -163,9 +163,8 @@ def atualiza_window(ui: QDialog,
     transformada = TransformadaViewport(dados_entrada[0]['window'],
                                         dados_entrada[0]['viewport'])
 
-    for index in range(len(dados_saida)):
-        dados_saida[index].aplica_transformada(dados_entrada[0]['window'],
-                                               dados_entrada[0]['viewport'])
+    realiza_transformacao_dados(dados_entrada[0],
+                                dados_saida)
 
     atualiza_lista_objetos(ui= ui,
                            dados_saida= dados_saida)

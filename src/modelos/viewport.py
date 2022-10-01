@@ -20,6 +20,9 @@ class Viewport:
                       QPen(QColor("black")))
         return scene
 
+    def __str__(self) -> str:
+        return f'Viewport: ({self.ponto_min.x}, {self.ponto_min.y}), ({self.ponto_max.x},{self.ponto_max.y})'
+
     def centro_objeto(self):
         centro_x = (self.ponto_min.x + self.ponto_max.x)/2
         centro_y = (self.ponto_min.y + self.ponto_max.y)/2
