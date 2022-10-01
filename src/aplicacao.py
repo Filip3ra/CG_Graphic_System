@@ -11,7 +11,7 @@ def exporta_arquivo_xml(dados_saida: list):
     Salva o arquivo dos dados de saída no formato XML
     '''
     nome_arquivo_saida = 'saida.xml'
-    gera_arquivo_saida(dados_saida, nome_arquivo_saida)
+    gera_arquivo_saida()
 
 
 def aplicacao(ui: QtWidgets.QDialog, scene):
@@ -96,7 +96,7 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
 
     # Ao pressionar o botão será gerado o arquivo de saída
     ui.button_exportar.pressed.connect(
-        lambda: exporta_arquivo_xml(dados_saida=dados_entrada))
+        lambda: exporta_arquivo_xml(dados_saida))
 
     # Fechando janela
     ui.button_close.clicked.connect(QtCore.QCoreApplication.instance().quit)

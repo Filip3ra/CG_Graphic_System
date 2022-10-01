@@ -41,9 +41,9 @@ def realiza_transformacao_dados(dados_entrada_dict: dict,
         dados_saida_xml['poligonos'].append(v_poligono)
         dados_saida.append(v_poligono)
 
-    gera_arquivo_saida(dados_saida_xml,'saida.xml')
+    #gera_arquivo_saida(dados_saida_xml,'saida.xml')
 
-    #guarda_arquivo_saida(dados_saida_xml)
+    guarda_arquivo_saida(dados_saida_xml)
 
 
 def atualiza_lista_objetos(ui: QDialog,

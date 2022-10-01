@@ -18,6 +18,22 @@ def converte_valores_dicionario_para_numerico(dic, int_ou_float):
             dic[key] = float(value)
 
     return dic
+
+def indenta_xml(root, level = 0):
+  i = '\n' + level * '  '
+  if len(root):
+    if not root.text or not root.text.strip():
+      root.text = i + '  '
+    if not root.tail or not root.tail.strip():
+      root.tail = i
+    for root in root:
+      indenta_xml(root, level + 1)
+    if not root.tail or not root.tail.strip():
+      root.tail = i
+  else:
+    if level and (not root.tail or not root.tail.strip()):
+      root.tail = i
+
 '''
 def addPonto(condicao):
     ui.label_ponto_1_x.setDisabled(True)
