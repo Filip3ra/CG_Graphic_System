@@ -148,28 +148,37 @@ def atualiza_window(ui: QDialog,
                     dados_entrada: list,
                     dados_saida: list,
                     tag_transformacao: str):
-    dados_entrada[0]['window'].aplica_transformacoes(tag_transformacao)
+    try:
+        dados_entrada[0]['window'].aplica_transformacoes(tag_transformacao)
 
-    if tag_transformacao == 'Rotação':
-        dados_entrada[0]['window'], transformacoes_aux = window_to_PPC(dados_entrada[0]['window'])
+        if tag_transformacao == 'Rotação':
+            dados_entrada[0]['window'], transformacoes_aux = window_to_PPC(dados_entrada[0]['window'])
 
-        for index in range(len(dados_saida)):
-            try:
-                # Atualizo somente para ponto, reta e poligono, pois somente eles tem o método atualiza_valores_PPC
-                dados_saida[index].atualiza_valores_PPC(transformacoes_aux)   
-            except:
-                pass 
+            for index in range(len(dados_saida)):
+                try:
+                    # Atualizo somente para ponto, reta e poligono, pois somente eles tem o método atualiza_valores_PPC
+                    dados_saida[index].atualiza_valores_PPC(transformacoes_aux)   
+                except:
+                    pass 
 
-    transformada = TransformadaViewport(dados_entrada[0]['window'],
-                                        dados_entrada[0]['viewport'])
+        transformada = TransformadaViewport(dados_entrada[0]['window'],
+                                            dados_entrada[0]['viewport'])
 
-    realiza_transformacao_dados(dados_entrada[0],
-                                dados_saida)
+        dados_saida_xml = {
+            'pontos': [],
+            'retas': [],
+            'poligonos': []
+        }
+        realiza_transformacao_dados(dados_entrada_dict= dados_entrada[0],
+                                    dados_saida_xml= dados_saida_xml,
+                                    dados_saida= dados_saida)
 
-    atualiza_lista_objetos(ui= ui,
-                           dados_saida= dados_saida)
+        atualiza_lista_objetos(ui= ui,
+                               dados_saida= dados_saida)
 
-    exibe_na_viewport(ui= ui,
-                      scene= scene,
-                      dados_entrada=dados_entrada,
-                      dados_saida= dados_saida)
+        exibe_na_viewport(ui= ui,
+                          scene= scene,
+                          dados_entrada=dados_entrada,
+                          dados_saida= dados_saida)
+    except:
+        print('Adicione um arquivo XML no programa!')
