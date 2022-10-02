@@ -17,8 +17,8 @@ class TransformacaoGeometrica:
         Função que multiplica a matriz de translação pela matriz atual.
         '''
         matriz_rotacao = [[np.cos(angulo_rad), -np.sin(angulo_rad), 0], 
-                             [np.sin(angulo_rad), np.cos(angulo_rad), 0],
-                             [0, 0, 1]]
+                          [np.sin(angulo_rad), np.cos(angulo_rad), 0],
+                          [0, 0, 1]]
         self.matriz = np.dot(matriz_rotacao, self.matriz)
 
     def escala(self, Sx, Sy):

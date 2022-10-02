@@ -67,7 +67,7 @@ def constroi_matriz_transformacoes(ui: QDialog,
             if str(ui.tableWidget.item(index, 0).text()) == 'Translação':
                 transformacoes.translacao(valor_x, valor_y)
             elif str(ui.tableWidget.item(index, 0).text()) == 'Rotação':
-                valor_x_rad = math.radians(valor_x)
+                valor_x_rad = - math.radians(valor_x)
                 transformacoes.rotacao(valor_x_rad)
             elif str(ui.tableWidget.item(index, 0).text()) == 'Escala':
                 transformacoes.escala(valor_x, valor_y)
