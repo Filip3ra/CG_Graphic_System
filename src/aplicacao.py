@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from clipping import verifica_clipping
+from clipping.clipping import verifica_clipping
 from escritor_xml import gera_arquivo_saida
 
 from graficos import adiciona_objeto_na_tabela, browseFiles, adiciona_objeto, reset_window
