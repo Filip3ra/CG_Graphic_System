@@ -24,9 +24,12 @@ def verifica_clipping(ui: QDialog,
                           dados_saida= dados_saida)
 
 '''
-COHEN SUTHERLAND
 
-RETAS:
+
+PONTO:
+#TODO
+
+RETAS COHEN SUTHERLAND:
 Preciso identificar o local que a reta corta minha janela.
 
 Uma reta pode estar cruzando nossa janela em quatro locais, o topo, o fundo, o lado direito e esquerdo. 
@@ -41,5 +44,8 @@ Fundo = x = x1 + 1/m * (yf - y1)
 
 Após calcular o 'm' e as duas equações referentes aos pontos de corte, tenho meu 'x' e 'y' referentes ao 
 ponto de interseção. 
+
+RETA LIANG BARSKY:
+#TODO
 
 '''
