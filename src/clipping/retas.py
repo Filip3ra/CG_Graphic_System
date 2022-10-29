@@ -6,12 +6,45 @@ from modelos.reta import Reta
 from modelos.window import Window
 
 
-def clipping_cohen_sutherland(lista_pontos_inter: list,
-                              lista_janela: list,
-                              reta: Reta):
+# REGION CODES
+RC_INSIDE = 0  # 0000
+RC_LEFT = 1    # 0001
+RC_RIGHT = 2   # 0010
+RC_BOTTOM = 4  # 0100
+RC_TOP = 8     # 1000
 
-    for ponto_inter in lista_pontos_inter:
-        if (reta.p1.x <= ponto_inter.x) & \
-            (ponto_inter.x <= reta.p2.x) & \
-            (reta.p1.y <= ponto_inter.y) & \
-                (ponto_inter.y <= reta.p2.y):
+# A ideia é fazer um OU lógico pra saber quais equações vou usar no cálculo
+# O operador '|=' realiza um OU lógico
+def get_region_code(): 
+
+    # TODO - preciso acessar esses valores
+    ponto = 0 # vai acessar o valor de x e y
+    window_min_ponto, window_max_ponto = 0 # vai acessar os valos min e max de x e y na window
+
+    region_code = RC_INSIDE
+
+    # verifica se x ta fora ou dentro da window
+    if(ponto.x < window_min_ponto.x):
+        region_code |= RC_LEFT
+    elif (ponto.x > window_max_ponto.x):
+      region_code |= RC_RIGHT
+    
+    # verifica se y ta fora ou dentro da window
+    if (ponto.y < window_max_ponto.y):
+      region_code |= RC_BOTTOM
+    elif (ponto.y > window_max_ponto.y):
+      region_code |= RC_TOP
+
+    return region_code
+
+
+
+
+def clipping_cohen_sutherland(ui: QDialog,
+                      dados_entrada: list,
+                      dados_saida: list):
+    print("teste")
+
+    # preciso tratar o region code primeiro, pra saber os quadrantes que a reta cruza
+
+
