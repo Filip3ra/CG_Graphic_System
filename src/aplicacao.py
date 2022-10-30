@@ -92,10 +92,10 @@ def aplicacao(ui: QtWidgets.QDialog, scene):
                                                                               dados_entrada=dados_entrada,
                                                                               dados_saida=dados_saida))
 
-    ui.button_aplicar_clipping.connect(lambda: verifica_clipping(ui=ui,
-                                                                 scene=scene,
-                                                                 dados_entrada=dados_entrada,
-                                                                 dados_saida=dados_saida))
+    ui.button_aplicar_clipping.clicked.connect(lambda: verifica_clipping(ui=ui,
+                                                                         scene=scene,
+                                                                         dados_entrada=dados_entrada,
+                                                                         dados_saida=dados_saida))
 
     # Ao pressionar o botão será gerado o arquivo de saída
     ui.button_exportar.pressed.connect(lambda: exporta_arquivo_xml(dados_saida))

@@ -34,6 +34,26 @@ def indenta_xml(root, level = 0):
     if level and (not root.tail or not root.tail.strip()):
       root.tail = i
 
+def encontra_rks(p1,p2,p3,p4,q1,q2,q3,q4):
+  '''
+  Algoritmo auxiliar para encontrar os rk's do método de Liang-Barsky.
+  '''
+  if p1 < 0:
+    rx_max = q1/p1
+    rx_min = q2/p2
+  else: 
+    rx_max = q2/p2
+    rx_min = q1/p1
+
+  if p3 < 0:
+    ry_max = q3/p3
+    ry_min = q4/p4
+  else: 
+    ry_max = q4/p4
+    ry_min = q3/p3
+
+  return rx_max,rx_min,ry_max,ry_min  
+
 '''
 def addPonto(condicao):
     ui.label_ponto_1_x.setDisabled(True)
