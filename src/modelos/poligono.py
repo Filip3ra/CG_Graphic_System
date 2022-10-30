@@ -1,3 +1,4 @@
+from auxiliares import VizObjViewport
 from transformacoes_geometricas import TransformacaoGeometrica
 from modelos.objeto_geometrico import ObjetoGeometrico
 
@@ -13,6 +14,7 @@ class Poligono(ObjetoGeometrico):
                 "O polígono precisa ter no mínimo três pontos que não sejam coincidentes")
         else:
             self.lista_pontos = lista_pontos
+            self.exibe_obj_viewport = VizObjViewport.DENTRO
 
     def __str__(self) -> str:
         str_ = 'Poligono: '

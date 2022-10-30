@@ -1,7 +1,7 @@
 import numpy as np
 
 from modelos.objeto_geometrico import ObjetoGeometrico
-from auxiliares import converte_valores_dicionario_para_numerico
+from auxiliares import VizObjViewport, converte_valores_dicionario_para_numerico
 from transformacoes_geometricas import TransformacaoGeometrica
 
 class Ponto(ObjetoGeometrico):
@@ -25,6 +25,7 @@ class Ponto(ObjetoGeometrico):
             self.y_original = y
             self.matriz = [x, y, 1]
             self.matriz_original = [x, y, 1]
+            self.exibe_obj_viewport = VizObjViewport.DENTRO
 
     def __str__(self) -> str:
         return f'Ponto: ({self.x}, {self.y})'

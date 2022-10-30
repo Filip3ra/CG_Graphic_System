@@ -1,5 +1,5 @@
 import numpy as np
-from auxiliares import encontra_rks
+from auxiliares import VizObjViewport, encontra_rks
 from modelos.ponto import Ponto
 
 from transformacoes_geometricas import TransformacaoGeometrica
@@ -18,6 +18,7 @@ class Reta(ObjetoGeometrico):
         else:
             self.p1 = p1
             self.p2 = p2
+            self.exibe_obj_viewport = VizObjViewport.DENTRO
 
     def __str__(self) -> str:
         return f'Reta: {self.p1} {self.p2}'
@@ -69,7 +70,13 @@ class Reta(ObjetoGeometrico):
             if u2 < 1:
                 self.p2.x = self.p1.x + u2*p2
                 self.p2.y = self.p1.y + u2*p4
+            self.exibe_obj_viewport = VizObjViewport.PARCIAL
+        elif u1 > u2:
+            self.exibe_obj_viewport = VizObjViewport.FORA
 
     def reset(self):
         self.p1.reset()
         self.p2.reset()
+
+    def destroy(self):
+        del self

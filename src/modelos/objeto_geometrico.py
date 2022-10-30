@@ -1,6 +1,9 @@
+from auxiliares import VizObjViewport
+
 class ObjetoGeometrico:
     def __init__(self) -> None:
-        pass
+        ## Inicialmente exibe tudo
+        self.exibe_obj_viewport = VizObjViewport.DENTRO
 
     def centro_objeto(self):
         pass

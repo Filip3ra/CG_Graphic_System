@@ -13,6 +13,7 @@ from modelos.poligono import Poligono
 from mapeadores.window_to_viewport import TransformadaViewport
 from escritor_xml import gera_arquivo_saida, guarda_arquivo_saida
 
+from auxiliares import VizObjViewport
 
 def realiza_transformacao_dados(dados_entrada_dict: dict,
                                 dados_saida: list,
@@ -28,16 +29,19 @@ def realiza_transformacao_dados(dados_entrada_dict: dict,
 
     for w_ponto in dados_entrada_dict['pontos']:
         v_ponto = transformacao.transformada_ponto(w_ponto)
+        v_ponto.exibe_obj_viewport = VizObjViewport.DENTRO
         dados_saida_xml['pontos'].append(v_ponto)
         dados_saida.append(v_ponto)
 
     for w_reta in dados_entrada_dict['retas']:
         v_reta = transformacao.transformada_reta(w_reta)
+        v_reta.exibe_obj_viewport = VizObjViewport.DENTRO
         dados_saida_xml['retas'].append(v_reta)
         dados_saida.append(v_reta)
 
     for w_poligono in dados_entrada_dict['poligonos']:
         v_poligono = transformacao.transformada_poligono(w_poligono)
+        v_poligono.exibe_obj_viewport = VizObjViewport.DENTRO
         dados_saida_xml['poligonos'].append(v_poligono)
         dados_saida.append(v_poligono)
 
@@ -133,26 +137,31 @@ def exibe_na_viewport(ui: QDialog,
                   dados_entrada[0]["viewport"].ponto_max.y,
                   QPen(QColor("black")))
 
-    for index in range(ui.list_objects.count()):
+    for index in range(ui.list_objects.count()):  
         # Adicionando uma cor para cada objeto
         color = next(list_colors_iter)
         brush = QBrush(QColor(dict_colors[color]))
 
         pen = QPen(brush, 3)
 
-        if isinstance(dados_saida[index], Ponto):
-            scene.addEllipse(
-                dados_saida[index].x, dados_saida[index].y, 1, 1, pen)
-        elif isinstance(dados_saida[index], Reta):
-            scene.addLine(dados_saida[index].p1.x, dados_saida[index].p1.y,
-                          dados_saida[index].p2.x, dados_saida[index].p2.y, pen)
-        elif isinstance(dados_saida[index], Poligono):
-            polygon = QPolygonF()
-            for ponto in dados_saida[index].lista_pontos:
-                polygon.append(QPointF(ponto.x, ponto.y))
+        try:
+            print(dados_saida[index].exibe_obj_viewport)
+            if dados_saida[index].exibe_obj_viewport != VizObjViewport.FORA:
+                if isinstance(dados_saida[index], Ponto):
+                    scene.addEllipse(
+                        dados_saida[index].x, dados_saida[index].y, 1, 1, pen)
+                elif isinstance(dados_saida[index], Reta):
+                    scene.addLine(dados_saida[index].p1.x, dados_saida[index].p1.y,
+                                dados_saida[index].p2.x, dados_saida[index].p2.y, pen)
+                elif isinstance(dados_saida[index], Poligono):
+                    polygon = QPolygonF()
+                    for ponto in dados_saida[index].lista_pontos:
+                        polygon.append(QPointF(ponto.x, ponto.y))
 
-            scene.addPolygon(polygon, pen)
-
+                    scene.addPolygon(polygon, pen)
+        except:
+            pass
+        
         ui.graphics_view_viewport.setScene(scene)
 
 
