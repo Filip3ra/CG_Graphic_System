@@ -40,11 +40,15 @@ class Reta(ObjetoGeometrico):
         self.p1.aplica_transformada(window, viewport)
         self.p2.aplica_transformada(window, viewport)
     
-    def clipping_liang_barsky(self, dados_entrada: dict):
+    def clipping_liang_barsky(self, 
+                              dados_entrada: dict,
+                              return_intersecao: bool = False):
         '''
         Algoritmo de clipping de retas de Liang-Barsky.
         '''
-        
+        ## Lista dos pontos de interseção entre a reta e viewport
+        pontos_intersecao = []
+
         p1 = - (self.p2.x - self.p1.x)
         p2 = self.p2.x - self.p1.x
         p3 = - (self.p2.y - self.p1.y)
@@ -66,17 +70,20 @@ class Reta(ObjetoGeometrico):
             if u1 > 0:
                 self.p1.x = self.p1.x + u1*p2
                 self.p1.y = self.p1.y + u1*p4
+                pontos_intersecao.append(self.p1)
 
             if u2 < 1:
                 self.p2.x = self.p1.x + u2*p2
                 self.p2.y = self.p1.y + u2*p4
+                pontos_intersecao.append(self.p2)
+
             self.exibe_obj_viewport = VizObjViewport.PARCIAL
         elif u1 > u2:
             self.exibe_obj_viewport = VizObjViewport.FORA
 
+        if return_intersecao:
+            return pontos_intersecao
+
     def reset(self):
         self.p1.reset()
         self.p2.reset()
-
-    def destroy(self):
-        del self
