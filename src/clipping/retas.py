@@ -51,4 +51,20 @@ def clipping_cohen_sutherland(ui: QDialog,
                               dados_saida: list):
     print("teste")
 
+    while(True):
+      if completamente_dentro:
+        print("Printa noramlamente, não clipa")
+
+      if compeltamente_fora:
+        print("Não clipa, não mostra nada")
+
+      #caso contrário então está parcialmente dentro
+      m = (y2-y1)/(x2-x1)
+
+      Esquerda = y = m * (Xe - X1) + y1
+      Direita = y = m * (Xd - X1) + y1
+      Topo = x = x1 + 1/m * (yt - y1)
+      Fundo = x = x1 + 1/m * (yf - y1)
+
+
     # preciso tratar o region code primeiro, pra saber os quadrantes que a reta cruza
