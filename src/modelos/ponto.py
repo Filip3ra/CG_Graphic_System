@@ -1,7 +1,7 @@
 import numpy as np
 
 from modelos.objeto_geometrico import ObjetoGeometrico
-from auxiliares import VizObjViewport, converte_valores_dicionario_para_numerico
+from auxiliares import PontoIntersecao, VizObjViewport, converte_valores_dicionario_para_numerico
 from transformacoes_geometricas import TransformacaoGeometrica
 
 class Ponto(ObjetoGeometrico):
@@ -26,6 +26,13 @@ class Ponto(ObjetoGeometrico):
             self.matriz = [x, y, 1]
             self.matriz_original = [x, y, 1]
             self.exibe_obj_viewport = VizObjViewport.DENTRO
+            '''
+            Verifica se o ponto:
+                -1: Não é um ponto de interseção
+                 0: Entrando na window
+                 1: Saindo da window
+            '''
+            self.flag_ponto_inter = PontoIntersecao.NAO
 
     def __str__(self) -> str:
         return f'Ponto: ({self.x}, {self.y})'

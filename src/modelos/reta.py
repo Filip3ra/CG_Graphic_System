@@ -1,5 +1,5 @@
 import numpy as np
-from auxiliares import VizObjViewport, encontra_rks
+from auxiliares import PontoIntersecao, VizObjViewport, encontra_rks
 from modelos.ponto import Ponto
 
 from transformacoes_geometricas import TransformacaoGeometrica
@@ -41,8 +41,7 @@ class Reta(ObjetoGeometrico):
         self.p2.aplica_transformada(window, viewport)
     
     def clipping_liang_barsky(self, 
-                              dados_entrada: dict,
-                              return_intersecao: bool = False):
+                              dados_entrada: dict):
         '''
         Algoritmo de clipping de retas de Liang-Barsky.
         '''
@@ -61,28 +60,29 @@ class Reta(ObjetoGeometrico):
 
         rx_max,rx_min,ry_max,ry_min = encontra_rks(p1,p2,p3,p4,q1,q2,q3,q4)
 
-        u1 = max(0, rx_max, ry_max)
-        u2 = min(1, rx_min, ry_min)
+        u1 = max(0, rx_max, ry_max) ## Fora p/ dentro
+        u2 = min(1, rx_min, ry_min) ## Dentro p/ fora
 
         if u1 <= u2:
             ## (u1 > u2) Reta completamente fora
             ## Substituindo na reta p/ encontrar pontos de interseção
             if u1 > 0:
-                self.p1.x = self.p1.x + u1*p2
-                self.p1.y = self.p1.y + u1*p4
-                pontos_intersecao.append(self.p1)
+                ponto_aux = Ponto(self.p1.x + u1*p2,
+                                  self.p1.y + u1*p4)
+                self.p1.x = ponto_aux.x
+                self.p1.y = ponto_aux.y
+                self.p2.flag_ponto_inter = PontoIntersecao.ENTRANDO
 
             if u2 < 1:
-                self.p2.x = self.p1.x + u2*p2
-                self.p2.y = self.p1.y + u2*p4
-                pontos_intersecao.append(self.p2)
+                ponto_aux = Ponto(self.p1.x + u2*p2,
+                                  self.p1.y + u2*p4)
+                self.p2.x = ponto_aux.x
+                self.p2.y = ponto_aux.y
+                self.p2.flag_ponto_inter = PontoIntersecao.SAINDO
 
             self.exibe_obj_viewport = VizObjViewport.PARCIAL
         elif u1 > u2:
             self.exibe_obj_viewport = VizObjViewport.FORA
-
-        if return_intersecao:
-            return pontos_intersecao
 
     def reset(self):
         self.p1.reset()

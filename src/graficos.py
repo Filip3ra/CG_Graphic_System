@@ -145,7 +145,6 @@ def exibe_na_viewport(ui: QDialog,
         pen = QPen(brush, 3)
 
         try:
-            print(dados_saida[index].exibe_obj_viewport)
             if dados_saida[index].exibe_obj_viewport != VizObjViewport.FORA:
                 if isinstance(dados_saida[index], Ponto):
                     scene.addEllipse(

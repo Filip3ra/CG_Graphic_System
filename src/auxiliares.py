@@ -9,6 +9,11 @@ class VizObjViewport(Enum):
     DENTRO = 1
     FORA = 2
     PARCIAL = 3
+
+class PontoIntersecao(Enum):
+    NAO = -1
+    ENTRANDO = 0
+    SAINDO = 1
     
 # converte o valor lido no meu dicionario de palavras para um valor numérico
 def converte_valores_dicionario_para_numerico(dic, int_ou_float):
@@ -46,20 +51,33 @@ def encontra_rks(p1,p2,p3,p4,q1,q2,q3,q4):
   Algoritmo auxiliar para encontrar os rk's do método de Liang-Barsky.
   '''
   if p1 < 0:
-    rx_max = q1/p1
-    rx_min = q2/p2
+    if p1 != 0: rx_max = q1/p1
+    else: rx_max = 0
+    if p2 != 0: rx_min = q2/p2
+    else: rx_min = 1
   else: 
-    rx_max = q2/p2
-    rx_min = q1/p1
+    if p2 != 0: rx_max = q2/p2
+    else: rx_max = 0
+    if p1 != 0: rx_min = q1/p1
+    else: rx_min = 1
 
   if p3 < 0:
-    ry_max = q3/p3
-    ry_min = q4/p4
+    if p3 != 0: ry_max = q3/p3
+    else: ry_max = 0
+    if p4 != 0: ry_min = q4/p4
+    else: ry_min = 1
   else: 
-    ry_max = q4/p4
-    ry_min = q3/p3
+    if p4 != 0: ry_max = q4/p4
+    else: ry_max = 0
+    if p3 != 0: ry_min = q3/p3
+    else: ry_min = 1
 
   return rx_max,rx_min,ry_max,ry_min  
+
+def pontos_iguais(p1, p2) -> bool:
+  if (p1.x == p2.x) & (p1.y == p2.y):
+    return True
+  return False
 
 '''
 def addPonto(condicao):
