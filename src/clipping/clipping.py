@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QDialog, QGraphicsScene
 
 from clipping.poligonos import clipping_poligono
 from graficos import atualiza_lista_objetos, exibe_na_viewport
+from modelos.ponto import Ponto
 from modelos.reta import Reta
 
 def verifica_clipping(ui: QDialog, 
@@ -11,7 +12,10 @@ def verifica_clipping(ui: QDialog,
 
     if ui.checkBox_ponto.isChecked():
         ## TODO Fazer clipping ponto
-        pass
+        for index in range(len(dados_saida)):
+            if isinstance(dados_saida[index], Ponto):
+                dados_saida[index].clipping_ponto(dados_entrada= dados_entrada[0],
+                                                  dados_saida= dados_saida)
     elif ui.checkBox_reta.isChecked():
         if ui.radioButton_liang.isChecked():
             for index in range(len(dados_saida)):

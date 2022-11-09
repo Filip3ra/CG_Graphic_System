@@ -71,6 +71,19 @@ class Ponto(ObjetoGeometrico):
         self.y = (1 - ((self.y - Yw_min) /
                 (Yw_max - Yw_min))) * (Yv_max - Yv_min)
 
+    def clipping_ponto(self, dados_entrada: dict, dados_saida: list):
+        """Função que verifica se o ponto está dentro da janela de viewport.
+
+        Args:
+            dados_entrada (dict): Dados de entrada dos objetos
+            dados_saida (list): Dados de saída dos objetos (dados transformados)
+        """        
+        if (dados_entrada['viewport'].ponto_min.x <= self.x <= dados_entrada['viewport'].ponto_max.x) & \
+           (dados_entrada['viewport'].ponto_min.y <= self.y <= dados_entrada['viewport'].ponto_max.y):
+            self.exibe_obj_viewport = VizObjViewport.DENTRO
+        else:
+            self.exibe_obj_viewport = VizObjViewport.FORA
+
     def reset(self):
         self.x = self.x_original
         self.y = self.y_original
