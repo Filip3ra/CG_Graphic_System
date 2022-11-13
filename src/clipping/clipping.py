@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QGraphicsScene
 
-from clipping.poligonos import clipping_poligono
 from graficos import atualiza_lista_objetos, exibe_na_viewport
+from modelos.poligono import Poligono
 from modelos.ponto import Ponto
 from modelos.reta import Reta
 
@@ -28,9 +28,10 @@ def verifica_clipping(ui: QDialog,
                     dados_saida[index].clipping_cohen_sutherland(dados_entrada= dados_entrada[0])
     elif ui.checkBox_poligono.isChecked():
         ## TODO Fazer clipping poligono
-        clipping_poligono(ui= ui,
-                          dados_entrada= dados_entrada,
-                          dados_saida= dados_saida)
+        for index in range(len(dados_saida)):
+            if isinstance(dados_saida[index], Poligono):
+                dados_saida[index].clipping_poligono(dados_entrada= dados_entrada[0],
+                                                     dados_saida= dados_saida)
 
     atualiza_lista_objetos(ui= ui,
                            dados_saida= dados_saida)
