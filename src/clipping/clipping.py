@@ -41,10 +41,6 @@ def verifica_clipping(ui: QDialog,
 
 '''
 
-
-PONTO:
-#TODO
-
 RETAS COHEN SUTHERLAND:
 Preciso identificar o local que a reta corta minha janela.
 
